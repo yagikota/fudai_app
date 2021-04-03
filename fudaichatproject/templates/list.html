@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'application.css' %}">
+    <link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet">
+    <title>府大チャット</title>
+</head>
+<body>
+    <div class="flexbox_container">
+        <header>
+            <div class="logo">
+                <img src="" alt="">
+            </div>
+            <nav>
+                <ul>
+                    <li>
+                        <div class="container">
+                            {% if user.is_authenticated %}
+                            <div>{{ user.get_username }}</div>
+                            {% endif %}
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="container">
+                                <div class="icon">
+                                    <i class="fas fa-home fa-lg"></i>
+                                </div>
+                                <div class="content chosen">Home</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'fudaichat:comment_create' %}">
+                            <div class="container">
+                                <div class="icon">
+                                    <i class="fas fa-pen fa-lg"></i>
+                                </div>
+                                <div class="content chosen">Comment</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'fudaichat:logout' %}">
+                            <div class="container">
+                                <div class="content chosen">Logout</div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        
+        <div class="comment_list_field">
+            <div class="tweets">Tweets</div>
+            {% if messages %}
+            <div class="container">
+                <div>
+                    {% for message in messages %}
+                    <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            <div class="comments_wrapper">
+                {% for item in comment_all_items%}
+                <div class="comment_wrapper" style="background-color: yellow;">
+                    <div class="comment_info">
+                        <div class="user_name">{{ item.author }}</div>
+                        <div class="commented_date">{{ item.post_date }}</div>
+                    </div>
+                    <div class="comment_content">{{ item.content }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            {% include 'simple_pagination.html' %}
+        </div>
+        
+        <div class="infomation_field">
+            <div class="information">お知らせ</div>
+        </div>
+    </div>
+        <footer >
+        <small>&copy; 2020 kota yagi</small>
+    </footer>
+    
+</body>
+</html>
