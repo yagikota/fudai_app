@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,8 +9,16 @@
     {% endblock header %}
 </head>
 <body>
-    <h1>府大CHAT</h1>
+    <div class="top_page_header">
+        <div class="fudaikenja_logo">
+            <a href="{% url 'fudaichat:top_page' %}">府大賢者</a>
+        </div>
+    </div>
     {% block content %}
     {% endblock content %}
+    <footer>
+        <div class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum rem officiis accusamus, est sequi vero? Deleniti quaerat iste repellat maiores recusandae animi repellendus? Ipsam omnis distinctio, exercitationem soluta quae quam.</div>
+        <div class="contact_form"></div>
+    </footer>
 </body>
 </html>

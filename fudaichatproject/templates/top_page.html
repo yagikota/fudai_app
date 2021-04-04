@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+    <div class="servise_description">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, suscipit delectus! Impedit consequuntur neque eius earum nostrum a hic ut perferendis eveniet. Quis omnis error vel cum iste quae obcaecati.</p>
+    </div>
+    <div class="login_and_signup">
+        <div>
+            <a href="{% url 'fudaichat:login' %}">Login</a>
+        </div>
+        <div>
+            <a href="{% url 'fudaichat:signup' %}">Sign Up</a>
+        </div>
+        
+    </div>
+</section>
+{% endblock content %}

@@ -1,4 +1,5 @@
 from django.http import request
+from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
@@ -18,15 +19,32 @@ from .forms import CustomLoginForm
 from django.contrib.auth.views import LoginView
 from django.conf import settings
 from django.core.signing import BadSignature, SignatureExpired, loads
-from . import utils
+from django.contrib.auth import get_user_model
 
 
 # Create your views here.
+User = get_user_model()
 
+class TopPage(TemplateView):
+    template_name = 'top_page.html'
+
+
+# login
+class CustomLoginView(LoginView):
+    form_class = CustomLoginForm
+    template_name = 'login.html'
+
+    def get(self, request, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('fudaichat:list')
+        return super().get(request, **kwargs)
+
+
+# sign up
 class CreateUser(CreateView):
     template_name = 'signup.html'
     form_class = CustomUserCreateForm
-    success_url = reverse_lazy('user_crate_done')
+    # success_url = reverse_lazy('signup_done')
 
     def get(self, request, **kwargs):
         if request.user.is_authenticated:
@@ -34,10 +52,6 @@ class CreateUser(CreateView):
         return super().get(request, **kwargs)
 
     def form_valid(self, form):
-        # This method is called when valid form data has been POSTed.
-        # It should return an HttpResponse.
-        # 仮登録と本登録の切り替えは、is_active属性を使うと簡単です。
-        # 退会処理も、is_activeをFalseにするだけにしておくと捗ります
 
         # 仮登録
         user = form.save(commit=False)# formの情報を保存
@@ -61,12 +75,12 @@ class CreateUser(CreateView):
         subject = render_to_string('mail/subject.txt', context)
         message = render_to_string('mail/message.txt', context)
         user.email_user(subject, message)
-        return redirect('fudaichat:user_create_done')
+        return redirect('fudaichat:signup_done')
 
 
 class UserCreateDone(TemplateView):
     # 仮登録完了
-    template_name = 'user_create_done.html'
+    template_name = 'signup_done.html'
 
     # 必要？
     def get(self, request, **kwargs):
@@ -77,7 +91,7 @@ class UserCreateDone(TemplateView):
 
 class UserCreateComplete(TemplateView):
     # 本登録完了
-    template_name = 'user_create_complete.html'
+    template_name = 'signup_complete.html'
     timeout_seconds = getattr(settings, 'ACTIVATION_TIMEOUT_SECONDS', 60 * 60 * 24)  # デフォルトでは1日以内
 
     def get(self, request, **kwargs):
@@ -86,81 +100,32 @@ class UserCreateComplete(TemplateView):
             return HttpResponseRedirect('/')
 
         token = kwargs.get('token')
-        # try:
+        try:
             #django.core.signing.dumps(user.pk)として作成したトークンは、django.core.signing.loads(token)としてuserのpkに復号化できます。 max_ageで有効期限の設定が可能です。
-        user_pk = loads(token, max_age=self.timeout_seconds)
+            user_pk = loads(token, max_age=self.timeout_seconds)
 
         # 期限切れ
-        # except SignatureExpired:
-        #     return HttpResponseBadRequest()
+        except SignatureExpired:
+            return HttpResponseBadRequest()
 
         # # tokenが間違っている
-        # except BadSignature:
-        #     return HttpResponseBadRequest()
+        except BadSignature:
+            return HttpResponseBadRequest()
 
         # tokenは問題なし
-        # try:
-        user = User.objects.get(pk=user_pk)
-        # except User.DoesNotExist:
-            # return HttpResponseBadRequest()
+        try:
+            user = User.objects.get(pk=user_pk)
+        except User.DoesNotExist:
+            return HttpResponseBadRequest()
 
         if not user.is_active:
             # 問題なければ本登録とする
             user.is_active = True
-            user.is_staff = False
-            user.is_superuser = False
             user.save()
-
-            # QRコード生成
-            # request.session["img"] = utils.get_image_b64(utils.get_auth_url(user.email, utils.get_secret(user)))
-
+            login(request, user)
             return super().get(request, **kwargs)
 
-        return render(request, 'usr_create_complete_html', {})
-
-
-
-class CustomLoginView(LoginView):
-    # ログイン
-    form_class = CustomLoginForm
-    template_name = 'login.html'
-
-    def get(self, request, **kwargs):
-        if request.user.is_authenticated:
-            return redirect('fudaichat:list')
-        return super().get(request, **kwargs)
-
-
-# def signupview(request):
-#     if request.method == 'POST':
-#         username_data = request.POST['username_data']
-#         mailaddress_data = request.POST['mailaddress_data']
-#         password_data = request.POST['password_data']
-#         try:
-#             User.objects.create_user(username_data, mailaddress_data + '@edu.osakafu-u.ac.jp', password_data)
-#             # user.save()
-#         except:
-#             # return render(request, 'signup.html', {'error': 'このユーザーはすでに登録されています'})
-#             return redirect('login')
-#     else:
-#         return render(request, 'signup.html', {})
-#     return redirect('login')
-
-
-
-# def loginview(request):
-#     if request.method == 'POST':
-#         username_data = request.POST['username_data']
-#         password_data = request.POST['password_data']
-#         user = authenticate(request, username=username_data, password=password_data)
-#         if user is not None:
-#             login(request, user)
-#             return redirect('list')
-#         else:
-#             # Return an 'invalid login' error message.
-#             return redirect('login')
-#     return render(request, 'login.html')
-
+        return HttpResponseBadRequest()
 
 
 
@@ -191,4 +156,4 @@ class CommentCreateView(CreateView):
 
 def logoutview(request):
     logout(request)
-    return redirect('fudaichat:login')
+    return redirect('fudaichat:top_page')
