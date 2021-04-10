@@ -15,8 +15,8 @@ from django.http import HttpResponseRedirect, HttpResponseBadRequest, HttpRespon
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.signing import dumps
 from django.template.loader import get_template, render_to_string
-from .forms import CustomLoginForm
-from django.contrib.auth.views import LoginView
+from .forms import CustomLoginForm, MyPasswordChangeForm, MySetPasswordForm, MyPasswordResetForm
+from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.conf import settings
 from django.core.signing import BadSignature, SignatureExpired, loads
 from django.contrib.auth import get_user_model
@@ -134,16 +134,16 @@ class CommentListview(ListView):
     model = Comment
     queryset = Comment.objects.order_by('-post_date')
     context_object_name = 'comment_all_items'
-    paginate_by = 5
+    paginate_by = 10
 
 
 class CommentCreateView(CreateView):
     template_name = 'comment_create.html'
     model = Comment
-    queryset = Comment.objects.order_by('post_date')
     fields = ('content',)
     context_object_name = 'comment_all_items'
     success_url = reverse_lazy('fudaichat:list')
+
 
     def form_valid(self, form):
         form.instance.author_id = self.request.user.id
@@ -151,8 +151,45 @@ class CommentCreateView(CreateView):
         messages.success(self.request, 'コメントを投稿しました')
         return super().form_valid(form)
 
+class ProfileView(TemplateView):
+    template_name = 'registration/profile.html'
 
-# https://qiita.com/godan09/items/97ea3a6397bf619b6517
+
+class PasswordChange(PasswordChangeView):
+    form_class = MyPasswordChangeForm
+    success_url = reverse_lazy('registration/password_change_done')
+    template_name = 'registration/password_change.html'
+
+
+class PasswordChangeDone(PasswordChangeDoneView):
+    template_name = 'register/password_change_done.html'
+
+
+class PasswordReset(PasswordResetView):
+    # """パスワード変更用URLの送付ページ"""
+    subject_template_name = 'fudaichat/mail_template/password_reset/subject.txt'
+    email_template_name = 'fudaichat/mail_template/password_reset/message.txt'
+    template_name = 'fudaichat/password_reset_form.html'
+    form_class = MyPasswordResetForm
+    success_url = reverse_lazy('fudaichat:password_reset_done')
+
+
+class PasswordResetDone(PasswordResetDoneView):
+    # """パスワード変更用URLを送りましたページ"""
+    template_name = 'fudaichat/password_reset_done.html'
+
+
+class PasswordResetConfirm(PasswordResetConfirmView):
+    # """新パスワード入力ページ"""
+    form_class = MySetPasswordForm
+    success_url = reverse_lazy('fudaichat:password_reset_complete')
+    template_name = 'fudaichat/password_reset_confirm.html'
+
+
+class PasswordResetComplete(PasswordResetCompleteView):
+    # """新パスワード設定しましたページ"""
+    template_name = 'fudaichat/password_reset_complete.html'
+
 
 def logoutview(request):
     logout(request)
