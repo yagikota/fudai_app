@@ -19,6 +19,6 @@
   
 ## アプリケーションで使用している技術
 * ### 言語
-  * python | HTML | CSS | 
+  * Python | HTML | CSS | 
 * ### フレームワーク等
   * Django | Bootstrap
