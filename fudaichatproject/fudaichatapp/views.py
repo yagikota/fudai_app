@@ -1,22 +1,17 @@
-from django.http import request
-from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
-from django.views.generic import ListView, CreateView, TemplateView
+from django.contrib.auth import login
+from django.contrib.auth import logout as auth_logout
+from django.views.generic import ListView, CreateView, TemplateView, View
 from .models import Comment
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
-from django.db import IntegrityError
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from .forms import CustomUserCreateForm
 from django.http import HttpResponseRedirect, HttpResponseBadRequest, HttpResponseRedirect
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.signing import dumps
-from django.template.loader import get_template, render_to_string
-from .forms import CustomLoginForm, MyPasswordChangeForm, MySetPasswordForm, MyPasswordResetForm
-from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordChangeDoneView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+from django.template.loader import render_to_string
 from django.conf import settings
 from django.core.signing import BadSignature, SignatureExpired, loads
 from django.contrib.auth import get_user_model
@@ -29,22 +24,9 @@ class TopPage(TemplateView):
     template_name = 'top_page.html'
 
 
-# login
-class CustomLoginView(LoginView):
-    form_class = CustomLoginForm
-    template_name = 'login.html'
-
-    def get(self, request, **kwargs):
-        if request.user.is_authenticated:
-            return redirect('fudaichat:list')
-        return super().get(request, **kwargs)
-
-
-# sign up
 class CreateUser(CreateView):
     template_name = 'signup.html'
     form_class = CustomUserCreateForm
-    # success_url = reverse_lazy('signup_done')
 
     def get(self, request, **kwargs):
         if request.user.is_authenticated:
@@ -54,24 +36,19 @@ class CreateUser(CreateView):
     def form_valid(self, form):
 
         # 仮登録
-        user = form.save(commit=False)# formの情報を保存
-        user.is_active = False#is_active=Falseにすることで仮登録にする
+        user = form.save(commit=False)
+        user.is_active = False#
         user.save()
 
-        # メール送信
         current_site = get_current_site(self.request)
         domain = current_site.domain
         context = {
             'protocol': 'https' if self.request.is_secure() else 'http',
             'domain': domain,
-            #django.core.signing.dumpを使うことで、tokenを生成しています。これはsettings.pyのSECRET_KEYの値等から生成される文字列で、第三者が推測しずらい文字列です。この文字列をもとに、本登録用のURLを作成し、そのURLをメールで伝えるという流れです。
             'token': dumps(user.pk),
             'user': user
         }
-        # subject_template = get_template('mail/subject.txt')
-        # message_template = get_template('mail/message.txt')
-        # subject = subject_template.render(context)
-        # message = message_template.render(context)
+
         subject = render_to_string('mail/subject.txt', context)
         message = render_to_string('mail/message.txt', context)
         user.email_user(subject, message)
@@ -155,42 +132,14 @@ class ProfileView(TemplateView):
     template_name = 'registration/profile.html'
 
 
-class PasswordChange(PasswordChangeView):
-    form_class = MyPasswordChangeForm
-    success_url = reverse_lazy('registration/password_change_done')
-    template_name = 'registration/password_change.html'
+class DeleteUserComfirmView(TemplateView):
+    template_name = 'registration/delete_confirm.html'
 
 
-class PasswordChangeDone(PasswordChangeDoneView):
-    template_name = 'register/password_change_done.html'
+class DeleteUserCompleteView(LoginRequiredMixin, View):
 
-
-class PasswordReset(PasswordResetView):
-    # """パスワード変更用URLの送付ページ"""
-    subject_template_name = 'fudaichat/mail_template/password_reset/subject.txt'
-    email_template_name = 'fudaichat/mail_template/password_reset/message.txt'
-    template_name = 'fudaichat/password_reset_form.html'
-    form_class = MyPasswordResetForm
-    success_url = reverse_lazy('fudaichat:password_reset_done')
-
-
-class PasswordResetDone(PasswordResetDoneView):
-    # """パスワード変更用URLを送りましたページ"""
-    template_name = 'fudaichat/password_reset_done.html'
-
-
-class PasswordResetConfirm(PasswordResetConfirmView):
-    # """新パスワード入力ページ"""
-    form_class = MySetPasswordForm
-    success_url = reverse_lazy('fudaichat:password_reset_complete')
-    template_name = 'fudaichat/password_reset_confirm.html'
-
-
-class PasswordResetComplete(PasswordResetCompleteView):
-    # """新パスワード設定しましたページ"""
-    template_name = 'fudaichat/password_reset_complete.html'
-
-
-def logoutview(request):
-    logout(request)
-    return redirect('fudaichat:top_page')
+    def get(self, *args, **kwargs):
+        # 大元のデータベースから削除
+        User.objects.filter(email=self.request.user.email).delete()
+        auth_logout(self.request)
+        return render(self.request,'top_page.html')

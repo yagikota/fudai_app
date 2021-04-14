@@ -26,35 +26,35 @@ class CustomUserCreateForm(UserCreationForm):
         return email
 
 
-class CustomLoginForm(AuthenticationForm):
+# class CustomLoginForm(AuthenticationForm):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'
-            field.widget.attrs['placeholder'] = field.label
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         for field in self.fields.values():
+#             field.widget.attrs['class'] = 'form-control'
+#             field.widget.attrs['placeholder'] = field.label
 
-class MyPasswordChangeForm(PasswordChangeForm):
+# class MyPasswordChangeForm(PasswordChangeForm):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'
-            field.widget.attrs['placeholder'] = field.label
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         for field in self.fields.values():
+#             field.widget.attrs['class'] = 'form-control'
+#             field.widget.attrs['placeholder'] = field.label
 
-class MyPasswordResetForm(PasswordResetForm):
-    # """パスワード忘れたときのフォーム"""
+# class MyPasswordResetForm(PasswordResetForm):
+#     # """パスワード忘れたときのフォーム"""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         for field in self.fields.values():
+#             field.widget.attrs['class'] = 'form-control'
 
 
-class MySetPasswordForm(SetPasswordForm):
-    # """パスワード再設定用フォーム(パスワード忘れて再設定)"""
+# class MySetPasswordForm(SetPasswordForm):
+#     # """パスワード再設定用フォーム(パスワード忘れて再設定)"""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         for field in self.fields.values():
+#             field.widget.attrs['class'] = 'form-control'

@@ -23,7 +23,7 @@
             <a class="btn btn-outline-secondary" href="{% url 'fudaichat:comment_create' %}">Comment</a>
             <a class="btn btn-outline-secondary" href="{% url 'fudaichat:profile' %}">マイページ</a>
             {% else %}
-            <a class="btn btn-outline-secondary" style="margin-right: 8px;" href="{% url 'fudaichat:login' %}">Login</a>
+            <a class="btn btn-outline-secondary" style="margin-right: 8px;" href="{% url 'login' %}">Login</a>
             <a class="btn btn-outline-secondary" href="{% url 'fudaichat:signup' %}">Sign Up</a>
             {% endif %}
         </nav>

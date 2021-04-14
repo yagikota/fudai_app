@@ -10,18 +10,20 @@
 <body style="background-color: #f5f5f5;">
     <div class="card card-container text-center" style="width: 40%; ; margin:64px auto;">
         <div style="margin: 16px 0 64px 0 ;">
-            <h1 class="h3 mb-3 font-weight-normal">メールアドレス</h1>
+            <h1 class="h3 mb-3 font-weight-normal">ログイン</h1>
             <form action="" method="POST">
-                {{ form.non_field_errors }}
-                {% for field in form %}
-                <div class="form-group">
-                    <label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+                <div style="width: 70%; margin: auto">
+                    {{ form.non_field_errors }}
+                    {% for field in form %}
+                    {{ field.label_tag }}
                     {{ field }}
                     {{ field.errors }}
+                    <hr>
+                    {% endfor %}
                 </div>
-                {% endfor %}
+                <button type="submit" class="btn btn-lg btn-primary btn-block">ログイン</button>
+                <!-- <input type="hidden" name="next" value="{{ next }}"/> -->
                 {% csrf_token %}
-                <button type="submit" class="btn btn-primary btn-lg">送信</button>
             </form>
             <a href="{% url 'password_reset' %}">パスワードをお忘れですか?</a>
         </div>
@@ -30,9 +32,3 @@
 </html>
 
 
-
-
-
-{% block content %}
-
-{% endblock %}

@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'fudaichatapp.apps.FudaichatappConfig',
+    'fudaichatapp.apps.fudaichatappConfig',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +126,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST_PASSWORD = 'Yagikota1126'
 # EMAIL_PORT = 587
 # EMAIL_USE_TLS = True
+
+LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_REDIRECT_URL = '/'
