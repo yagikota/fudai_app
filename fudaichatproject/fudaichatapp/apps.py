@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class FudaichatappConfig(AppConfig):
+class fudaichatappConfig(AppConfig):
     name = 'fudaichatapp'
