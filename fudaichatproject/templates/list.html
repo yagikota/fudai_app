@@ -10,7 +10,10 @@
 <div class="container container-m">
     <div class="row">
             <div class="comment_list_field">
-                    <p class="tweets" style="text-align: center; font-size: 2rem">Tweets</p>
+                <p class="tweets" style="text-align: center; font-size: 2rem">Tweets</p>
+                <div>
+                    {% include 'simple_pagination.html' %}
+                </div>
                 {% if messages %}
                 <div class="container">
                     <div>

@@ -1,48 +1,16 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block header %}
-<link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
-<!-- <link rel="stylesheet" type="text/css" href="{% static 'list.css' %}"> -->
-<link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet">
-{% endblock header %}
+{% extends 'base_centered.html' %}
 
-{% block body %}
-<div class="container container-m">
-    <div class="row">
-            <div class="comment_list_field">
-                    <p class="tweets" style="text-align: center; font-size: 2rem">Tweets</p>
-                {% if messages %}
-                <div class="container">
-                    <div>
-                        {% for message in messages %}
-                        <p>{{ message }}</p>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
-                <div class="comments_wrapper" >
-                    {% for item in comment_all_items%}
-                    <div class="comment_wrapper" style=" line-height: 2rem; border-bottom: solid 1px #6c757d">
-                        <div class="comment_info">
-                            <div class="">
-                                <div class="user_name">{{ item.author }}</div>
-                                <div class="commented_date">{{ item.post_date }}</div>
-                            </div>
-                        </div>
-                        <div class="comment_content">{{ item.content }}</div>
-                    </div>
-                    {% endfor %}
-                </div>
+{% load widget_tweaks %}
+
+{% block content %}
+            <div style="margin: 16px 0 64px 0">
+                <h1 class="h3 mb-3 font-weight-normal">質問</h1>
                 <form method="post">{% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit">送信</button>
+                    {{ form.content | add_class:'form-control'}}
+                    <button type="submit" class="btn btn-lg btn-primary btn-block">送信</button>
                 </form>
-                <div>
-                    {% include 'simple_pagination.html' %}
-                </div>
             </div>
-    </div>
-</div>
-{% endblock body%}
+
+{% endblock content %}
 
 
