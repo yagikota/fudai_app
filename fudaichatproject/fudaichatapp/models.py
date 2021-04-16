@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.CharField(max_length=500, null=True)
+    content = models.TextField(max_length=500, null=True)
     post_date = models.DateTimeField(auto_now_add=True)
     likes = models.IntegerField(null=True, blank=True, default=0)
     dislikes = models.IntegerField(null=True, blank=True, default=0)

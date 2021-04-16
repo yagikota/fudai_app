@@ -37,7 +37,7 @@ class CreateUser(CreateView):
 
         # 仮登録
         user = form.save(commit=False)
-        user.is_active = False#
+        user.is_active = False
         user.save()
 
         current_site = get_current_site(self.request)
@@ -103,7 +103,6 @@ class UserCreateComplete(TemplateView):
             return super().get(request, **kwargs)
 
         return HttpResponseBadRequest()
-
 
 
 class CommentListview(ListView):
