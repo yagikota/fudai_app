@@ -17,6 +17,8 @@ class CustomUserCreateForm(UserCreationForm):
     #clean_email()メソッドは同じメールアドレスで仮登録段階のアカウントを消去しています
     def clean_email(self):
         email = self.cleaned_data['email']
+        if "@edu.osaka-u.ac.jp" not in email:   # any check you need
+            raise forms.ValidationError("登録に使えるのはedu.osaka-u.ac.jpを持つメールアドレスのみです。")
         User.objects.filter(email=email, is_active=False).delete()
         return email
 
