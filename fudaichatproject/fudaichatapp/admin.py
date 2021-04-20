@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Comment
+from .models import Question, Response
 
 # Register your models here.
-admin.site.register(Comment)
+admin.site.register(Question)
+admin.site.register(Response)

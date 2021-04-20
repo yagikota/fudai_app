@@ -2,12 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth import logout as auth_logout
 from django.views.generic import ListView, CreateView, TemplateView, View
-from .models import Comment
+from .models import Question, Response
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from .forms import CustomUserCreateForm
+from .forms import CustomUserCreateForm, NewQuestionForm, NewReplyForm, NewResponseForm
 from django.http import HttpResponseRedirect, HttpResponseBadRequest, HttpResponseRedirect
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.signing import dumps
@@ -105,27 +105,14 @@ class UserCreateComplete(TemplateView):
         return HttpResponseBadRequest()
 
 
-class CommentListview(ListView):
+class QuestionListview(ListView):
     template_name = 'list.html'
-    model = Comment
-    queryset = Comment.objects.order_by('-post_date')
-    context_object_name = 'comment_all_items'
+    model = Question
+    queryset = Question.objects.order_by('-updated_at')
+    context_object_name = 'questions'
     paginate_by = 10
 
 
-class CommentCreateView(CreateView):
-    template_name = 'comment_create.html'
-    model = Comment
-    fields = ('content',)
-    context_object_name = 'comment_all_items'
-    success_url = reverse_lazy('fudaichat:list')
-
-
-    def form_valid(self, form):
-        form.instance.author_id = self.request.user.id
-        self.object = comment = form.save()
-        messages.success(self.request, 'コメントを投稿しました')
-        return super().form_valid(form)
 
 class ProfileView(TemplateView):
     template_name = 'registration/profile.html'
@@ -142,3 +129,74 @@ class DeleteUserCompleteView(LoginRequiredMixin, View):
         User.objects.filter(email=self.request.user.email).delete()
         auth_logout(self.request)
         return render(self.request,'top_page.html')
+
+
+
+
+
+# 変更
+
+
+def newQuestionPage(request):
+    form = NewQuestionForm()
+
+    if request.method == 'POST':
+        try:
+            form = NewQuestionForm(request.POST)
+            if form.is_valid():
+                question = form.save(commit=False)
+                question.author = request.user
+                question.save()
+        except Exception as e:
+            print(e)
+            raise
+
+    context = {'form': form}
+    return render(request, 'comment_create.html', context)
+
+
+
+def questionPage(request, id):
+    response_form = NewResponseForm()
+    reply_form = NewReplyForm()
+
+    if request.method == 'POST':
+        try:
+            response_form = NewResponseForm(request.POST)
+            if response_form.is_valid():
+                response = response_form.save(commit=False)
+                response.user = request.user
+                response.question = Question(id=id)
+                response.save()
+                return redirect('/question/'+str(id)+'#'+str(response.id))
+        except Exception as e:
+            print(e)
+            raise
+
+    question = Question.objects.get(id=id)
+    context = {
+        'question': question,
+        'response_form': response_form,
+        'reply_form': reply_form,
+    }
+    return render(request, 'question.html', context)
+
+
+def replyPage(request):
+    if request.method == 'POST':
+        try:
+            form = NewReplyForm(request.POST)
+            if form.is_valid():
+                question_id = request.POST.get('question')
+                parent_id = request.POST.get('parent')
+                reply = form.save(commit=False)
+                reply.user = request.user
+                reply.question = Question(id=question_id)
+                reply.parent = Response(id=parent_id)
+                reply.save()
+                return redirect('/question/'+str(question_id)+'#'+str(reply.id))
+        except Exception as e:
+            print(e)
+            raise
+
+    return redirect('list')

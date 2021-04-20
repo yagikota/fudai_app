@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
-# from django.db.models import fields
-from . import utils
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from .models import Question, Response
 from django import forms
 
 User = get_user_model()
@@ -17,8 +16,8 @@ class CustomUserCreateForm(UserCreationForm):
     #clean_email()メソッドは同じメールアドレスで仮登録段階のアカウントを消去しています
     def clean_email(self):
         email = self.cleaned_data['email']
-        if "@edu.osaka-u.ac.jp" not in email:   # any check you need
-            raise forms.ValidationError("登録に使えるのはedu.osaka-u.ac.jpを持つメールアドレスのみです。")
+        if "@edu.osakafu-u.ac.jp" not in email:   # any check you need
+            raise forms.ValidationError("登録に使えるのはedu.osakafu-u.ac.jpを持つメールアドレスのみです。")
         User.objects.filter(email=email, is_active=False).delete()
         return email
 
@@ -30,3 +29,33 @@ class CustomLoginForm(AuthenticationForm):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
             field.widget.attrs['placeholder'] = field.label
+
+
+# 変更
+
+class NewQuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ['title', 'body']
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'autofocus': True,
+                'placeholder': 'How to create a Q&A website with Django?'
+            })
+        }
+
+class NewResponseForm(forms.ModelForm):
+    class Meta:
+        model = Response
+        fields = ['body']
+
+class NewReplyForm(forms.ModelForm):
+    class Meta:
+        model = Response
+        fields = ['body']
+        widgets = {
+            'body': forms.Textarea(attrs={
+                'rows': 2,
+                'placeholder': 'What are your thoughts?'
+            })
+        }

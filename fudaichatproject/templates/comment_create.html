@@ -6,7 +6,16 @@
             <div style="margin: 16px 0 64px 0">
                 <h1 class="h3 mb-3 font-weight-normal">質問</h1>
                 <form method="post">{% csrf_token %}
-                    {{ form.content | add_class:'form-control'}}
+                    <div>
+                        <label for="{{form.title.id_for_label}}">Title:</label>
+                        {{form.title | add_class:'form-control'}}
+                        <span class="error">{{form.title.errors}}</span>
+                    </div>
+                    <div>
+                        <label for="{{form.body.id_for_label}}">Body:</label>
+                        {{ form.body | add_class:'form-control'}}
+                        <span class="error">{{form.body.errors}}</span>
+                    </div>
                     <button type="submit" class="btn btn-lg btn-primary btn-block">送信</button>
                 </form>
             </div>
