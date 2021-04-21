@@ -1,9 +1,9 @@
-<blockquote id="{{response.id}}">
+<blockquote id="{{response.id}}" style="margin-left: 15px; border-left: solid 6px lightgray; padding-left: 6px;">
     <p class="response-body">{{response.body}}</p>
     <small class="response-author">by {{response.author.username}}</small>
 
     {% if user.is_authenticated %}
-        <button class="reply-button">Reply</button>
+        <button class="reply-button" onclick="handleReplyButton({{response.id}})">Reply</button>
     {% endif %}
 
     <blockquote id="reply-form-container-{{response.id}}" class="reply-form-container">
@@ -11,8 +11,9 @@
             <input type="hidden" name="question" value="{{question.id}}"/>
             <input type="hidden" name="parent" value="{{response.id}}"/>
             {{reply_form.body}}
-            <button type="button" class="reply-form-cancel-button">Cancel</button>
-            <input type="submit" class="reply-form-submit-button" value="Reply"/>
+            <br>
+            <button type="button" class="btn btn-sm btn-secondary btn-block" onclick="handleCancelReply({{response.id}})">Cancel</button>
+            <input type="submit" class="btn btn-sm btn-secondary btn-block" value="Reply"/>
         </form>
     </blockquote>
 

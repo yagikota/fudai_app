@@ -25,15 +25,15 @@
                 {% endif %}
                 <div class="comments_wrapper" >
                     {% for question in questions %}
-                    <a href="{% url 'fudaichat:question' question.id %}">
+                    <a href="{% url 'fudaichat:question' question.id %}" style="text-decoration: none; color: #6c757d">
                         <div class="comment_wrapper" style=" line-height: 2rem; border-bottom: solid 1px #6c757d">
                             <div class="comment_info">
-                                <div class="">
-                                    <div class="user_name">{{ question.author }}</div>
-                                    <div class="commented_date">{{ question.updated_at }}</div>
+                                <h3 class="comment_content">{{ question.title }}</h3>
+                                <div class="" style="">
+                                    <span class="user_name">{{ question.author }}</span>
+                                    <span class="commented_date">{{ question.updated_at }}</span>
                                 </div>
                             </div>
-                            <div class="comment_content">{{ question.title }}</div>
                         </div>
                     </a>
                     {% endfor %}
