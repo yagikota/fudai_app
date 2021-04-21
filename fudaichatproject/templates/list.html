@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block header %}
-<link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
 <!-- <link rel="stylesheet" type="text/css" href="{% static 'list.css' %}"> -->
 <link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet">
 {% endblock header %}
@@ -24,16 +24,18 @@
                 </div>
                 {% endif %}
                 <div class="comments_wrapper" >
-                    {% for item in comment_all_items%}
-                    <div class="comment_wrapper" style=" line-height: 2rem; border-bottom: solid 1px #6c757d">
-                        <div class="comment_info">
-                            <div class="">
-                                <div class="user_name">{{ item.author }}</div>
-                                <div class="commented_date">{{ item.post_date }}</div>
+                    {% for question in questions %}
+                    <a href="{% url 'fudaichat:question' question.id %}" style="text-decoration: none; color: #6c757d">
+                        <div class="comment_wrapper" style=" line-height: 2rem; border-bottom: solid 1px #6c757d">
+                            <div class="comment_info">
+                                <h3 class="comment_content">{{ question.title }}</h3>
+                                <div class="" style="">
+                                    <span class="user_name">{{ question.author }}</span>
+                                    <span class="commented_date">{{ question.updated_at }}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="comment_content">{{ item.content }}</div>
-                    </div>
+                    </a>
                     {% endfor %}
                 </div>
                 <div>
