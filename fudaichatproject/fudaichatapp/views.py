@@ -15,7 +15,7 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from django.core.signing import BadSignature, SignatureExpired, loads
 from django.contrib.auth import get_user_model
-
+from pure_pagination.mixins import PaginationMixin
 
 # Create your views here.
 User = get_user_model()
@@ -105,13 +105,12 @@ class UserCreateComplete(TemplateView):
         return HttpResponseBadRequest()
 
 
-class QuestionListview(ListView):
+class QuestionListview(PaginationMixin, ListView):
     template_name = 'list.html'
     model = Question
     queryset = Question.objects.order_by('-updated_at')
     context_object_name = 'questions'
-    paginate_by = 10
-
+    paginate_by = 1
 
 
 class ProfileView(TemplateView):
