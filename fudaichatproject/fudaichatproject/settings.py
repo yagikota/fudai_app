@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'fudaichatapp.apps.fudaichatappConfig',
     'bootstrap4',
     'widget_tweaks',
+    'pure_pagination',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = 'fudaichat:list'
 
 LOGOUT_REDIRECT_URL = '/'
+
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 2,
+    'MARGIN_PAGES_DISPLAYED': 1,
+
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True,
+}
