@@ -130,11 +130,7 @@ class DeleteUserCompleteView(LoginRequiredMixin, View):
         return render(self.request,'top_page.html')
 
 
-
-
-
 # 変更
-
 
 def newQuestionPage(request):
     form = NewQuestionForm()
