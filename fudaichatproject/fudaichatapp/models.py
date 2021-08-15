@@ -31,3 +31,9 @@ class Response(models.Model):
 
     def get_responses(self):
         return Response.objects.filter(parent=self)
+
+class Likes(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    

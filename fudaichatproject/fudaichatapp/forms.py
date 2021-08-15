@@ -12,7 +12,6 @@ class CustomUserCreateForm(UserCreationForm):
         model = User
         fields = ('username', 'email')
 
-        
     #clean_email()メソッドは同じメールアドレスで仮登録段階のアカウントを消去しています
     def clean_email(self):
         email = self.cleaned_data['email']
