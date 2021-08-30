@@ -8,6 +8,7 @@ User = get_user_model()
 # UserCreationフォームではpassword1とpassword2が単純なフィールドとして定義されていることに注意です。つまり、Meta内でwidget=...といった上書きはできないことを意味します。なので、forms.pyにてこれらのcssのclassをいじりたい場合は__init__メソッドやクラスのフィールドとして定義しなおす必要があります。
 
 class CustomUserCreateForm(UserCreationForm):
+    # https://www.nblog09.com/w/2019/05/01/django-modelform/
     class Meta:
         model = User
         fields = ('username', 'email')

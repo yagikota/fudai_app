@@ -2,11 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth import logout as auth_logout
 from django.views.generic import ListView, CreateView, TemplateView, View
-from .models import Question, Response
+from .models import Question, Response, Likes
 from django.contrib.auth.models import User
-from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib import messages
 from .forms import CustomUserCreateForm, NewQuestionForm, NewReplyForm, NewResponseForm
 from django.http import HttpResponseRedirect, HttpResponseBadRequest, HttpResponseRedirect
 from django.contrib.sites.shortcuts import get_current_site
@@ -16,7 +14,8 @@ from django.conf import settings
 from django.core.signing import BadSignature, SignatureExpired, loads
 from django.contrib.auth import get_user_model
 from pure_pagination.mixins import PaginationMixin
-
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
 # Create your views here.
 User = get_user_model()
 
@@ -106,11 +105,48 @@ class UserCreateComplete(TemplateView):
 
 
 class QuestionListview(PaginationMixin, ListView):
-    template_name = 'list.html'
-    model = Question
-    queryset = Question.objects.order_by('-updated_at')
-    context_object_name = 'questions'
-    paginate_by = 1
+    # template_name = 'list.html'
+    # model = Question
+    # context_object_name = 'questions'
+    # queryset = Question.objects.order_by('-updated_at')
+    # paginate_by = 1
+
+    def get(self, request, *args, **kwargs):
+        questions = Question.objects.all()
+        liked_list = []
+        for question in questions:
+            liked = question.likes_set.filter(author=request.user)
+            if liked.exists():
+                liked_list.append(question.id)
+
+        context = {
+            'questions': questions,
+            'liked_list': liked_list,
+        }
+
+        return render(request, 'list.html', context)
+
+
+def likeview(request):
+    if request.method =="POST":
+        question = get_object_or_404(Question, pk=request.POST.get('question_id'))
+        author = request.user
+        liked = False
+        like = Likes.objects.filter(question=question, author=author)
+        if like.exists():
+            like.delete()
+        else:
+            like.create(question=question, author=author)
+            liked = True
+
+        context={
+            'question_id': question.id,
+            'liked': liked,
+            'count': question.likes_set.count(),
+        }
+
+    if request.is_ajax():
+        return JsonResponse(context)
 
 
 class ProfileView(TemplateView):
@@ -148,8 +184,6 @@ def newQuestionPage(request):
 
     context = {'form': form}
     return render(request, 'comment_create.html', context)
-
-
 
 def questionPage(request, id):
     response_form = NewResponseForm()

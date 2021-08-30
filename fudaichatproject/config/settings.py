@@ -127,12 +127,12 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = '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'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_HOST = 'smtp.sendgrid.net'
+# EMAIL_HOST_USER = 'apikey'
+# EMAIL_HOST_PASSWORD = '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'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
 
 LOGIN_REDIRECT_URL = 'fudaichat:list'
 
@@ -141,6 +141,5 @@ LOGOUT_REDIRECT_URL = '/'
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 2,
     'MARGIN_PAGES_DISPLAYED': 1,
-
     'SHOW_FIRST_PAGE_WHEN_INVALID': True,
 }

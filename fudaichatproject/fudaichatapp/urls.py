@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import TopPage, QuestionListview, CreateUser, UserCreateDone, UserCreateComplete, ProfileView, DeleteUserComfirmView, DeleteUserCompleteView, questionPage, replyPage, newQuestionPage
+from .views import TopPage, QuestionListview, CreateUser, UserCreateDone, UserCreateComplete, ProfileView, DeleteUserComfirmView, DeleteUserCompleteView, questionPage, replyPage, newQuestionPage, likeview
 
 app_name  = 'fudaichat'
 
@@ -9,6 +9,7 @@ urlpatterns = [
     path('signup/done', UserCreateDone.as_view(), name='signup_done'),
     path('signup/complete/<token>/', UserCreateComplete.as_view(), name='signup_complete'),
     path('list/', QuestionListview.as_view(), name='list'),
+    path('like/', likeview, name='like'),
     path('profile/', ProfileView.as_view(), name='profile'),
     path('delete_confirm', DeleteUserComfirmView.as_view(template_name='registration/delete_confirm.html'), name='delete_confirm'),
     path('delete_complete', DeleteUserCompleteView.as_view(), name='delete_complete'),
