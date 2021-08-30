@@ -10,7 +10,7 @@
 <div class="container container-m">
     <div class="row">
             <div class="comment_list_field">
-                <p class="tweets" style="text-align: center; font-size: 2rem">Tweets</p>
+                <p class="tweets" style="text-align: center; font-size: 2rem">質問一覧</p>
                 <div>
                     {% include 'simple_pagination.html' %}
                 </div>
@@ -25,17 +25,22 @@
                 {% endif %}
                 <div class="comments_wrapper" >
                     {% for question in questions %}
-                    <a href="{% url 'fudaichat:question' question.id %}" style="text-decoration: none; color: #6c757d">
-                        <div class="comment_wrapper" style=" line-height: 2rem; border-bottom: solid 1px #6c757d">
-                            <div class="comment_info">
-                                <h3 class="comment_content">{{ question.title }}</h3>
-                                <div class="" style="">
-                                    <span class="user_name">{{ question.author }}</span>
-                                    <span class="commented_date">{{ question.updated_at }}</span>
+                    <div>
+                        <a href="{% url 'fudaichat:question' question.id %}" style="text-decoration: none; color: #6c757d">
+                            <div class="comment_wrapper" style=" line-height: 2rem; border-bottom: solid 1px #6c757d">
+                                <div class="comment_info">
+                                    
+                                    <h3 class="comment_content">{{ question.title }}</h3>
+                                    <p>{{ question.body|truncatechars_html:100}}</p>
+                                    <div class="" style="">
+                                        <span class="user_name">{{ question.author }}</span>
+                                        <span class="commented_date">{{ question.updated_at }}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                        {% include 'like.html' %}
+                    </div>
                     {% endfor %}
                 </div>
                 <div>
@@ -44,4 +49,31 @@
             </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function(event){
+        $(document).on('click', '#like', function(event){
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'fudaichat:like' %}",
+                data: {
+                    'question_id': $(this).attr('name'),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                dataType: 'json',
+                success: function(response){
+                    selector = document.getElementsByName(response.question_id);
+                    if(response.liked){
+                        $(selector).html("<i class='fas fa-thumbs-up'></i>");
+                    }
+                    else {
+                        $(selector).html("<i class='far fa-thumbs-up'></i>");
+                    }
+                    selector2 = document.getElementsByName(response.question_id + "-count");
+                    $(selector2).text(response.count);
+                }
+            });
+        });
+    });
+</script>
 {% endblock body%}

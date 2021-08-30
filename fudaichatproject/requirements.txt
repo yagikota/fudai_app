@@ -1,0 +1,18 @@
+asgiref @ file:///tmp/build/80754af9/asgiref_1605055780383/work
+certifi==2020.12.5
+colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1602866480661/work
+Django @ file:///tmp/build/80754af9/django_1613762073373/work
+django-bootstrap4==1.1.1
+django-crispy-forms @ file:///home/conda/feedstock_root/build_artifacts/django-crispy-forms_1616363921078/work
+django-pure-pagination==0.3.0
+django-widget-tweaks==1.4.5
+furl==2.1.2
+mysqlclient==2.0.3
+orderedmultidict==1.0.1
+psycopg2 @ file:///opt/concourse/worker/volumes/live/7541fe58-2a45-4073-5d69-313e733fc729/volume/psycopg2_1612298592535/work
+PyMySQL==1.0.2
+pyotp @ file:///home/conda/feedstock_root/build_artifacts/pyotp_1612473173760/work
+pytz @ file:///tmp/build/80754af9/pytz_1612215392582/work
+qrcode==6.1
+six @ file:///home/conda/feedstock_root/build_artifacts/six_1590081179328/work
+sqlparse @ file:///tmp/build/80754af9/sqlparse_1602184451250/work
