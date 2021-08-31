@@ -1,29 +1,16 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block header %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
-<!-- <link rel="stylesheet" type="text/css" href="{% static 'list.css' %}"> -->
-{% endblock header %}
+{% extends "registration/base.html" %}
 
-{% block body %}
+{% block content %}
+
 <div class="container container-m">
     <div class="row">
             <div class="comment_list_field">
-                <p class="tweets" style="text-align: center; font-size: 2rem">質問一覧</p>
+                <p class="tweets" style="text-align: center; font-size: 2rem">いいねした質問一覧</p>
                 <div>
                     {% include 'simple_pagination.html' %}
                 </div>
-                {% if messages %}
-                <div class="container">
-                    <div>
-                        {% for message in messages %}
-                        <p>{{ message }}</p>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
                 <div class="comments_wrapper" >
-                    {% for question in questions %}
+                    {% for question in liked_questions %}
                     <div>
                         <a href="{% url 'fudaichat:question' question.id %}" style="text-decoration: none; color: #6c757d">
                             <div class="comment_wrapper" style=" line-height: 2rem; border-bottom: solid 1px #6c757d">
@@ -38,7 +25,7 @@
                                 </div>
                             </div>
                         </a>
-                        {% include 'like.html' %}
+                        {% include 'liked.html' %}
                     </div>
                     {% endfor %}
                 </div>
@@ -75,4 +62,5 @@
         });
     });
 </script>
-{% endblock body%}
+
+{% endblock %}

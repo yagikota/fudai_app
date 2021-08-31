@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth import logout as auth_logout
@@ -104,7 +105,7 @@ class UserCreateComplete(TemplateView):
         return HttpResponseBadRequest()
 
 
-class QuestionListview(PaginationMixin, ListView):
+class QuestionListView(PaginationMixin, ListView):
     # template_name = 'list.html'
     # model = Question
     # context_object_name = 'questions'
@@ -127,6 +128,23 @@ class QuestionListview(PaginationMixin, ListView):
         return render(request, 'list.html', context)
 
 
+class QuestionListView(PaginationMixin, ListView):
+    def get(self, request, *args, **kwargs):
+        questions = Question.objects.all()
+        author = request.user
+        liked_list = []
+        for question in questions:
+            liked = question.likes_set.filter(author=author)
+            if liked.exists():
+                liked_list.append(question.id)
+
+        context = {
+            'questions': questions,
+            'liked_list': liked_list,
+        }
+
+        return render(request, 'list.html', context)
+
 def likeview(request):
     if request.method =="POST":
         question = get_object_or_404(Question, pk=request.POST.get('question_id'))
@@ -147,6 +165,39 @@ def likeview(request):
 
     if request.is_ajax():
         return JsonResponse(context)
+
+class LikedQuestionListView(ListView):
+    def get(self, request, *args, **kwargs):
+        author  = request.user
+        questions = Question.objects.all()
+        liked_questions = []
+        liked_list = []
+        for question in questions:
+            liked_question = question.likes_set.filter(author=author)
+            if liked_question.exists():
+                liked_questions.append(question)
+                liked_list.append(question.id)
+        context = {
+            'liked_questions': liked_questions,
+            'liked_list': liked_list,
+        }
+        return render(request, 'registration/liked_question_list.html', context)
+
+def my_question_list(request):
+    author = request.user
+    my_questions = Question.objects.filter(author=author)
+    liked_list = []
+    for question in my_questions:
+        liked_question = question.likes_set.filter(author=author)
+        if liked_question.exists():
+            liked_list.append(question)
+            liked_list.append(question.id)
+    context = {
+        'my_questions': my_questions,
+        'liked_list': liked_list,
+    }
+    return render(request, 'registration/my_question_list.html', context)
+
 
 
 class ProfileView(TemplateView):
