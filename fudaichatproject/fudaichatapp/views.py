@@ -106,44 +106,21 @@ class UserCreateComplete(TemplateView):
 
 
 class QuestionListView(PaginationMixin, ListView):
-    # template_name = 'list.html'
-    # model = Question
-    # context_object_name = 'questions'
-    # queryset = Question.objects.order_by('-updated_at')
-    # paginate_by = 1
-
-    def get(self, request, *args, **kwargs):
+    template_name = 'list.html'
+    model = Question
+    context_object_name = 'questions'
+    paginate_by = 1
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         questions = Question.objects.all()
         liked_list = []
         for question in questions:
-            liked = question.likes_set.filter(author=request.user)
+            liked = question.likes_set.filter(author=self.request.user)
             if liked.exists():
                 liked_list.append(question.id)
+        context['liked_list'] = liked_list
+        return context
 
-        context = {
-            'questions': questions,
-            'liked_list': liked_list,
-        }
-
-        return render(request, 'list.html', context)
-
-
-class QuestionListView(PaginationMixin, ListView):
-    def get(self, request, *args, **kwargs):
-        questions = Question.objects.all()
-        author = request.user
-        liked_list = []
-        for question in questions:
-            liked = question.likes_set.filter(author=author)
-            if liked.exists():
-                liked_list.append(question.id)
-
-        context = {
-            'questions': questions,
-            'liked_list': liked_list,
-        }
-
-        return render(request, 'list.html', context)
 
 def likeview(request):
     if request.method =="POST":
@@ -166,38 +143,46 @@ def likeview(request):
     if request.is_ajax():
         return JsonResponse(context)
 
-class LikedQuestionListView(ListView):
-    def get(self, request, *args, **kwargs):
-        author  = request.user
+class LikedQuestionListView(PaginationMixin, ListView):
+    template_name = 'registration/liked_question_list.html'
+    context_object_name = 'liked_questions'
+    paginate_by = 1
+
+    # 自分がいいねした質問のquerysetを取得
+    def get_queryset(self):
+        id_list = [likes.question.id for likes in Likes.objects.filter(author=self.request.user)]
+        return Question.objects.filter(id__in=id_list)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         questions = Question.objects.all()
-        liked_questions = []
         liked_list = []
         for question in questions:
-            liked_question = question.likes_set.filter(author=author)
-            if liked_question.exists():
-                liked_questions.append(question)
+            liked = question.likes_set.filter(author=self.request.user)
+            if liked.exists():
                 liked_list.append(question.id)
-        context = {
-            'liked_questions': liked_questions,
-            'liked_list': liked_list,
-        }
-        return render(request, 'registration/liked_question_list.html', context)
+        context['liked_list'] = liked_list
+        return context
 
-def my_question_list(request):
-    author = request.user
-    my_questions = Question.objects.filter(author=author)
-    liked_list = []
-    for question in my_questions:
-        liked_question = question.likes_set.filter(author=author)
-        if liked_question.exists():
-            liked_list.append(question)
-            liked_list.append(question.id)
-    context = {
-        'my_questions': my_questions,
-        'liked_list': liked_list,
-    }
-    return render(request, 'registration/my_question_list.html', context)
+class MyQuestionListView(PaginationMixin, ListView):
+    template_name = 'registration/my_question_list.html'
+    context_object_name = 'my_questions'
+    paginate_by = 1
 
+    # 自分がした質問のquerysetを取得
+    def get_queryset(self):
+        return Question.objects.filter(author=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        my_questions = Question.objects.filter(author=self.request.user)
+        liked_list = []
+        for question in my_questions:
+            liked = question.likes_set.filter(author=self.request.user)
+            if liked.exists():
+                liked_list.append(question.id)
+        context['liked_list'] = liked_list
+        return context
 
 
 class ProfileView(TemplateView):
