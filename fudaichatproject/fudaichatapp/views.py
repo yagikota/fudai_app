@@ -17,6 +17,7 @@ from django.contrib.auth import get_user_model
 from pure_pagination.mixins import PaginationMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
+from django.db.models import Count
 # Create your views here.
 User = get_user_model()
 
@@ -109,13 +110,28 @@ class QuestionListView(PaginationMixin, ListView):
     template_name = 'list.html'
     model = Question
     context_object_name = 'questions'
-    paginate_by = 1
+    paginate_by = 10
+
+    def get_queryset(self):
+        sort_order = self.request.GET.get('sort_order')
+        if sort_order == 'date_desc':
+            return Question.objects.order_by('-created_at')
+        elif sort_order == 'date_asc':
+            return Question.objects.order_by('created_at')
+        elif sort_order == 'ans_desc':
+            return Question.objects.annotate(num_responses=Count('responses')).order_by('-num_responses')
+        elif sort_order == 'ans_asc':
+            return Question.objects.annotate(num_responses=Count('responses')).order_by('num_responses')
+        else:
+            return Question.objects.annotate(num_likes=Count('likes')).order_by('-num_likes')
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         questions = Question.objects.all()
         liked_list = []
         for question in questions:
-            liked = question.likes_set.filter(author=self.request.user)
+            liked = question.likes.filter(author=self.request.user)
             if liked.exists():
                 liked_list.append(question.id)
         context['liked_list'] = liked_list
@@ -137,7 +153,7 @@ def likeview(request):
         context={
             'question_id': question.id,
             'liked': liked,
-            'count': question.likes_set.count(),
+            'count': question.likes.count(),
         }
 
     if request.is_ajax():
@@ -151,14 +167,25 @@ class LikedQuestionListView(PaginationMixin, ListView):
     # 自分がいいねした質問のquerysetを取得
     def get_queryset(self):
         id_list = [likes.question.id for likes in Likes.objects.filter(author=self.request.user)]
-        return Question.objects.filter(id__in=id_list)
+        question =  Question.objects.filter(id__in=id_list)
+        sort_order = self.request.GET.get('sort_order')
+        if sort_order == 'date_desc':
+            return question.order_by('-created_at')
+        elif sort_order == 'date_asc':
+            return question.order_by('created_at')
+        elif sort_order == 'ans_desc':
+            return question.annotate(num_responses=Count('responses')).order_by('-num_responses')
+        elif sort_order == 'ans_asc':
+            return question.annotate(num_responses=Count('responses')).order_by('num_responses')
+        else:
+            return question.annotate(num_likes=Count('likes')).order_by('-num_likes')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         questions = Question.objects.all()
         liked_list = []
         for question in questions:
-            liked = question.likes_set.filter(author=self.request.user)
+            liked = question.likes.filter(author=self.request.user)
             if liked.exists():
                 liked_list.append(question.id)
         context['liked_list'] = liked_list
@@ -171,14 +198,25 @@ class MyQuestionListView(PaginationMixin, ListView):
 
     # 自分がした質問のquerysetを取得
     def get_queryset(self):
-        return Question.objects.filter(author=self.request.user)
+        question =  Question.objects.filter(author=self.request.user)
+        sort_order = self.request.GET.get('sort_order')
+        if sort_order == 'date_desc':
+            return question.order_by('-created_at')
+        elif sort_order == 'date_asc':
+            return question.order_by('created_at')
+        elif sort_order == 'ans_desc':
+            return question.annotate(num_responses=Count('responses')).order_by('-num_responses')
+        elif sort_order == 'ans_asc':
+            return question.annotate(num_responses=Count('responses')).order_by('num_responses')
+        else:
+            return question.annotate(num_likes=Count('likes')).order_by('-num_likes')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         my_questions = Question.objects.filter(author=self.request.user)
         liked_list = []
         for question in my_questions:
-            liked = question.likes_set.filter(author=self.request.user)
+            liked = question.likes.filter(author=self.request.user)
             if liked.exists():
                 liked_list.append(question.id)
         context['liked_list'] = liked_list

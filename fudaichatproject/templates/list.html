@@ -13,15 +13,18 @@
                 <div>
                     {% include 'simple_pagination.html' %}
                 </div>
-                {% if messages %}
-                <div class="container">
-                    <div>
-                        {% for message in messages %}
-                        <p>{{ message }}</p>
-                        {% endfor %}
-                    </div>
+                <div class="select-wrap">
+                    <form action="" method="GET">
+                        <select name="sort_order" id="sort_order" onchange="submit(this.form)">
+                            <option value="">並び替え</option>
+                            <option value="date_desc">質問日時の新しい順</option>
+                            <option value="date_asc">質問日時の古い順</option>
+                            <option value="ans_desc">回答数の多い順</option>
+                            <option value="ans_asc">回答数の少ない順</option>
+                            <option value="likes_desc">いいねの多い順</option>
+                        </select>
+                    </form>
                 </div>
-                {% endif %}
                 <div class="comments_wrapper" >
                     {% for question in questions %}
                     <div>
@@ -74,5 +77,5 @@
             });
         });
     });
-</script>
+    </script>
 {% endblock body%}

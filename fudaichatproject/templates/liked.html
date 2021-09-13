@@ -2,4 +2,4 @@
     {% csrf_token %}
     <button id="like" name="{{question.id}}"><i class="fas fa-thumbs-up"></i></button>
 </form>
-<p name="{{question.id}}-count" class="count"> {{ question.likes_set.count }} </p>
+<p name="{{question.id}}-count" class="count"> {{ question.likes.count }} </p>
