@@ -17,7 +17,6 @@ class Question(models.Model):
     def get_responses(self):
         return self.responses.filter(parent=None)
 
-
 class Response(models.Model):
     author = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, null=False, on_delete=models.CASCADE, related_name='responses')
@@ -33,6 +32,6 @@ class Response(models.Model):
         return Response.objects.filter(parent=self)
 
 class Likes(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='likes')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
