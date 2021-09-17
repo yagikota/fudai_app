@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '-p#udqdkhhb%x^6fu1t7@=2^*-smixzpi52*dmu+9fql6h&5+i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["fudai-kenja.com"]
 
 # Application definition
 
@@ -78,12 +78,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'fudai_db',
-        'USER': 'yagikota',
-        'PASSWORD': 'Yagikota1126',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'fudai_kenja_db',
+        'USER': 'kotayagi',
+        'PASSWORD': 'aullfetalflchemist',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '',
     }
 }
 
