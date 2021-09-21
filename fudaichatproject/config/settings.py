@@ -23,9 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '-p#udqdkhhb%x^6fu1t7@=2^*-smixzpi52*dmu+9fql6h&5+i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["fudai-kenja.com"]
+# ALLOWED_HOSTS = ["fudai-kenja.com"]
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -76,16 +78,23 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'fudai_kenja_db',
+#         'USER': 'kotayagi',
+#         'PASSWORD': 'aullfetalflchemist',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'fudai_kenja_db',
-        'USER': 'kotayagi',
-        'PASSWORD': 'aullfetalflchemist',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
