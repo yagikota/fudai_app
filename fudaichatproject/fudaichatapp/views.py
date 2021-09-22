@@ -110,7 +110,7 @@ class QuestionListView(PaginationMixin, ListView):
     template_name = 'list.html'
     model = Question
     context_object_name = 'questions'
-    paginate_by = 10
+    paginate_by = 1
 
     def get_queryset(self):
         sort_order = self.request.GET.get('sort_order')
