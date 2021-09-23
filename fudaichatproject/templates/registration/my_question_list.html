@@ -2,49 +2,61 @@
 
 {% block content %}
 
-<div class="container container-m">
-    <div class="row">
-            <div class="comment_list_field">
-                <p class="tweets" style="text-align: center; font-size: 2rem">自分の質問一覧</p>
-                <div>
-                    {% include 'simple_pagination.html' %}
-                </div>
-                <div class="select-wrap">
-                    <form action="" method="GET">
-                        <select name="sort_order" id="sort_order" onchange="submit(this.form)">
-                            <option value="">並び替え</option>
-                            <option value="date_desc">質問日時の新しい順</option>
-                            <option value="date_asc">質問日時の古い順</option>
-                            <option value="ans_desc">回答数の多い順</option>
-                            <option value="ans_asc">回答数の少ない順</option>
-                            <option value="likes_desc">いいねの多い順</option>
-                        </select>
-                    </form>
-                </div>
-                <div class="comments_wrapper" >
-                    {% for question in my_questions %}
-                    <div>
-                        <a href="{% url 'fudaichat:question' question.id %}" style="text-decoration: none; color: #6c757d">
-                            <div class="comment_wrapper" style=" line-height: 2rem; border-bottom: solid 1px #6c757d">
-                                <div class="comment_info">
-                                    
-                                    <h3 class="comment_content">{{ question.title }}</h3>
-                                    <p>{{ question.body|truncatechars_html:100}}</p>
-                                    <div class="" style="">
-                                        <span class="user_name">{{ question.author }}</span>
-                                        <span class="commented_date">{{ question.updated_at }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        {% include 'like.html' %}
+<div class="content-detached ">
+    <div class="content-body">
+        <div id="wallet">
+            {% include 'simple_pagination.html' %}
+            <div class="wallet-table-th d-none d-md-block">
+                <div class="row">
+                    <div class="col-md-6 col-12 py-1">
+                        <p class="mt-0 text-capitalize">質問文</p>
                     </div>
-                    {% endfor %}
-                </div>
-                <div>
-                    {% include 'simple_pagination.html' %}
+                    <div class="col-md-2 col-12 py-1 text-center">
+                        <p class="mt-0 text-capitalize">質問者</p>
+                    </div>
+                    <div class="col-md-2 col-12 py-1 text-center">
+                        <p class="mt-0 text-capitalize">いいね数</p>
+                    </div>
+                    <div class="col-md-2 col-12 py-1 text-center">
+                        <p class="mt-0 text-capitalize">質問日</p>
+                    </div>
                 </div>
             </div>
+
+        {% for question in my_questions %}
+            <section class="card pull-up">
+                <div class="card-content">
+                    <div class="card-body">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-md-6 col-12 py-1">
+                                    <div class="media">
+                                        <i class="cc BTC mr-2 font-large-2 warning"></i>
+                                        <div class="media-body">
+                                            <h5 class="mt-0 text-capitalize">{{ question.title }}</h5>
+                                            <p class="text-muted mb-0 font-small-3 wallet-address">{{ question.body|truncatechars_html:100}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-12 py-1 text-center">
+                                    <p class="text-muted mb-0 font-small-3">{{ question.author }}</p>
+                                </div>
+                                <div class="col-md-2 col-12 py-1 text-center">
+                                    {% include 'like.html' %}
+                                </div>
+                                <div class="col-md-2 col-12 py-1 text-center">
+                                    <p class="text-muted mb-0 font-small-3">{{ question.updated_at }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% endfor %}
+
+        {% include 'simple_pagination.html' %}
+
+        </div>
     </div>
 </div>
 
