@@ -1,4 +1,4 @@
-{% extends 'base_centered.html' %}
+{% extends 'base.html' %}
 
 {% load widget_tweaks %}
 
@@ -28,11 +28,19 @@
             <div class="col-12 col-md-8">
                 <!-- User Profile -->
                 <section class="card">
+                    {% if message %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
                     <div class="card-content">
                         <div class="card-body">
                             <div class="col-12">
                                 <div class="row">
-                                    <div class="col-md-10 col-12">
+                                    <div class="col-12">
                                         <div class="row">
                                             <div class="col-12 col-md-4">
                                                 <p class="text-bold-700 text-uppercase mb-0">質問</p>

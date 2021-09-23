@@ -139,6 +139,7 @@ class QuestionListView(PaginationMixin, ListView):
 
 
 def likeview(request):
+    print("hello")
     if request.method =="POST":
         question = get_object_or_404(Question, pk=request.POST.get('question_id'))
         author = request.user
@@ -155,6 +156,7 @@ def likeview(request):
             'liked': liked,
             'count': question.likes.count(),
         }
+        print(context)
 
     if request.is_ajax():
         return JsonResponse(context)
@@ -241,7 +243,6 @@ class DeleteUserCompleteView(LoginRequiredMixin, View):
 
 
 # 変更
-
 def newQuestionPage(request):
     form = NewQuestionForm()
 
@@ -256,7 +257,11 @@ def newQuestionPage(request):
             print(e)
             raise
 
-    context = {'form': form}
+    context = {
+        'form': form,
+        'message': '送信完了しました。',
+    }
+
     return render(request, 'comment_create.html', context)
 
 def questionPage(request, id):
