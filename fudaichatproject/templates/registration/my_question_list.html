@@ -74,10 +74,10 @@
                 success: function(response){
                     selector = document.getElementsByName(response.question_id);
                     if(response.liked){
-                        $(selector).html("<i class='fas fa-thumbs-up'></i>");
+                        $(selector).html("<i class='fas fa-thumbs-up fa-lg'></i>");
                     }
                     else {
-                        $(selector).html("<i class='far fa-thumbs-up'></i>");
+                        $(selector).html("<i class='far fa-thumbs-up fa-lg'></i>");
                     }
                     selector2 = document.getElementsByName(response.question_id + "-count");
                     $(selector2).text(response.count);

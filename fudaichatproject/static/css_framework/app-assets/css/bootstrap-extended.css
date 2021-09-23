@@ -524,6 +524,33 @@ select.form-control {
     background-position: right center;
     text-decoration: none; }
 
+.btn-gradient-success {
+  border-radius: 2rem;
+  font-size: 1rem;
+  color: #FFFFFF;
+  padding: 1rem 3rem;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+  outline: none !important;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
+  -moz-transition: 0.5s;
+  transition: 0.5s;
+  background-image: -webkit-gradient(linear, left top, right top, from(#37ff48), color-stop(51%, #00ecfd), to(#37ff48));
+  background-image: -webkit-linear-gradient(left, #37ff48 0%, #00ecfd 51%, #37ff48 100%);
+  background-image: -moz-linear-gradient(left, #37ff48 0%, #00ecfd 51%, #37ff48 100%);
+  background-image: -o-linear-gradient(left, #37ff48 0%, #00ecfd 51%, #37ff48 100%);
+  background-image: linear-gradient(to right, #37ff48 0%, #00ecfd 51%, #37ff48 100%);
+  background-position: left center;
+  -webkit-background-size: 200% auto;
+  background-size: 200% auto;
+  border: 0;
+  -webkit-box-shadow: 0px 0px 16px 0 rgba(55, 255, 72, 0.5);
+  box-shadow: 0px 0px 16px 0 rgba(55, 255, 72, 0.5); }
+  .btn-gradient-success:hover {
+    background-position: right center;
+    text-decoration: none; }
+
 .btn-min-width {
   min-width: 8.5rem; }
 
