@@ -139,7 +139,7 @@ class QuestionListView(PaginationMixin, ListView):
 
 
 def likeview(request):
-    print("hello")
+    print(request)
     if request.method =="POST":
         question = get_object_or_404(Question, pk=request.POST.get('question_id'))
         author = request.user
