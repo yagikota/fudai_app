@@ -110,7 +110,7 @@ class QuestionListView(PaginationMixin, ListView):
     template_name = 'list.html'
     model = Question
     context_object_name = 'questions'
-    paginate_by = 1
+    paginate_by = 3
 
     def get_queryset(self):
         sort_order = self.request.GET.get('sort_order')
@@ -196,7 +196,7 @@ class LikedQuestionListView(PaginationMixin, ListView):
 class MyQuestionListView(PaginationMixin, ListView):
     template_name = 'registration/my_question_list.html'
     context_object_name = 'my_questions'
-    paginate_by = 1
+    paginate_by = 3
 
     # 自分がした質問のquerysetを取得
     def get_queryset(self):
@@ -242,7 +242,7 @@ class DeleteUserCompleteView(LoginRequiredMixin, View):
         return render(self.request,'top_page.html')
 
 
-# 変更
+# 質問する時の処理
 def newQuestionPage(request):
     form = NewQuestionForm()
 
@@ -253,17 +253,16 @@ def newQuestionPage(request):
                 question = form.save(commit=False)
                 question.author = request.user
                 question.save()
+
         except Exception as e:
             print(e)
             raise
 
-    context = {
-        'form': form,
-        'message': '送信完了しました。',
-    }
+    context = {'form': form}
 
     return render(request, 'comment_create.html', context)
 
+# 質問への返信の処理
 def questionPage(request, id):
     response_form = NewResponseForm()
     reply_form = NewReplyForm()
@@ -272,11 +271,13 @@ def questionPage(request, id):
         try:
             response_form = NewResponseForm(request.POST)
             if response_form.is_valid():
+                # commit=FalseとしてResponseのインスタンスを代入, commit=Trueだと
                 response = response_form.save(commit=False)
+                # formで入力されなかったfieldを入力
                 response.author = request.user
                 response.question = Question(id=id)
                 response.save()
-                return redirect('/question/'+str(id)+'#'+str(response.id))
+                return redirect('/question/'+str(id))
         except Exception as e:
             print(e)
             raise
@@ -289,7 +290,7 @@ def questionPage(request, id):
     }
     return render(request, 'question.html', context)
 
-
+# 返信に対する返信の処理
 def replyPage(request):
     if request.method == 'POST':
         try:
@@ -302,7 +303,7 @@ def replyPage(request):
                 reply.question = Question(id=question_id)
                 reply.parent = Response(id=parent_id)
                 reply.save()
-                return redirect('/question/'+str(question_id)+'#'+str(reply.id))
+                return redirect('/question/'+str(question_id))
         except Exception as e:
             print(e)
             raise

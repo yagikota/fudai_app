@@ -39,8 +39,13 @@ class NewQuestionForm(forms.ModelForm):
         fields = ['title', 'body']
         widgets = {
             'title': forms.TextInput(attrs={
+                'class': 'form-control',
                 'autofocus': True,
-                'placeholder': 'How to create a Q&A website with Django?'
+                'placeholder': '質問タイトルを入力してください。'
+            }),
+            'body': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': '回答内容を入力してください。'
             })
         }
 
@@ -48,6 +53,13 @@ class NewResponseForm(forms.ModelForm):
     class Meta:
         model = Response
         fields = ['body']
+        widgets = {
+            'body': forms.Textarea(attrs={
+                'autofocus': True,
+                'class': 'form-control',
+                'placeholder': '回答内容を入力してください。'
+            })
+        }
 
 class NewReplyForm(forms.ModelForm):
     class Meta:
@@ -55,7 +67,8 @@ class NewReplyForm(forms.ModelForm):
         fields = ['body']
         widgets = {
             'body': forms.Textarea(attrs={
+                'class': 'form-control',
                 'rows': 2,
-                'placeholder': 'What are your thoughts?'
+                'placeholder': '返信内容を入力してください。'
             })
         }

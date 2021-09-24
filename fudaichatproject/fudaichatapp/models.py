@@ -20,6 +20,7 @@ class Question(models.Model):
 class Response(models.Model):
     author = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, null=False, on_delete=models.CASCADE, related_name='responses')
+    # 返信に対する返信で使用
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
     body = models.TextField(null=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -28,6 +29,7 @@ class Response(models.Model):
     def __str__(self):
         return self.body[:30]
 
+    # この返信に対する返信を取得
     def get_responses(self):
         return Response.objects.filter(parent=self)
 
