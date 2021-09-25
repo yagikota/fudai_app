@@ -21,6 +21,9 @@ from django.db.models import Count
 # Create your views here.
 User = get_user_model()
 
+class LandPage(TemplateView):
+    template_name = 'landing_page.html'
+
 class TopPage(TemplateView):
     template_name = 'top_page.html'
 
@@ -35,7 +38,6 @@ class CreateUser(CreateView):
         return super().get(request, **kwargs)
 
     def form_valid(self, form):
-
         # 仮登録
         user = form.save(commit=False)
         user.is_active = False

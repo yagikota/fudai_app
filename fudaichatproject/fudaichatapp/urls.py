@@ -1,12 +1,13 @@
 from django.urls import path
-from .views import TopPage, QuestionListView, CreateUser, UserCreateDone, UserCreateComplete,\
+from .views import LandPage, TopPage, QuestionListView, CreateUser, UserCreateDone, UserCreateComplete,\
 ProfileView, DeleteUserComfirmView, DeleteUserCompleteView, questionPage, replyPage, newQuestionPage,\
 likeview, LikedQuestionListView, MyQuestionListView
 
 app_name  = 'fudaichat'
 
 urlpatterns = [
-    path('', TopPage.as_view(), name='top_page'),
+    path('', LandPage.as_view(), name='land_page'),
+    path('top_page/', TopPage.as_view(), name='top_page'),
     path('signup/', CreateUser.as_view(), name='signup'),
     path('signup/done', UserCreateDone.as_view(), name='signup_done'),
     path('signup/complete/<token>/', UserCreateComplete.as_view(), name='signup_complete'),
