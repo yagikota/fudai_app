@@ -11,7 +11,17 @@ class CustomUserCreateForm(UserCreationForm):
     # https://www.nblog09.com/w/2019/05/01/django-modelform/
     class Meta:
         model = User
-        fields = ('username', 'email')
+        fields = ('username', 'email',)
+        widgets = {
+            'username': forms.TextInput(attrs={
+                'class': 'form-control',
+                'autofocus': True,
+            }),
+            'email': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'example@edu.osakafu-u.ac.jp'
+            }),
+        }
 
     #clean_email()メソッドは同じメールアドレスで仮登録段階のアカウントを消去しています
     def clean_email(self):
