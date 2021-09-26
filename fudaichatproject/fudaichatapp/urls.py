@@ -16,9 +16,9 @@ urlpatterns = [
     path('my_q_list', MyQuestionListView.as_view(), name='my_q_list'),
     path('like/', likeview, name='like'),
     path('profile/', ProfileView.as_view(), name='profile'),
-    path('delete_confirm', DeleteUserComfirmView.as_view(template_name='registration/delete_confirm.html'), name='delete_confirm'),
+    path('delete_confirm', DeleteUserComfirmView.as_view(), name='delete_confirm'),
     path('delete_complete', DeleteUserCompleteView.as_view(), name='delete_complete'),
     path('new_question', newQuestionPage, name='new_question'),
     path('question/<int:id>/', questionPage, name='question'),
-    path('reply', replyPage, name='reply')
+    path('reply', replyPage, name='reply'), 
 ]

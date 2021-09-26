@@ -42,7 +42,15 @@ INSTALLED_APPS = [
     'bootstrap4',
     'widget_tweaks',
     'pure_pagination',
+    # django-allauthを使用するのに必要
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
+
+# django-allauthを使用するのに必要
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -144,10 +152,20 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST_PASSWORD = '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'
 # EMAIL_PORT = 587
 # EMAIL_USE_TLS = True
+# 暗号化されたhttpsを使うようにする
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT = True
 
-LOGIN_REDIRECT_URL = '/top_page'
+# django.contrib.authの設定
+# LOGIN_URL = '/'
+# LOGIN_REDIRECT_URL = '/top_page/'
+# LOGOUT_REDIRECT_URL = '/'
 
-LOGOUT_REDIRECT_URL = '/'
+# django-allauthの設定
+LOGIN_REDIRECT_URL = '/top_page/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_REQUIRED = True
 
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 2,

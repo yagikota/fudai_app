@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'fudaichatapp/base.html' %}
 {% load static %}
 
 {% block body %}
@@ -64,7 +64,7 @@
                                     <p class="">No responses yet</p>
                                 {% else %}
                                     {% for response in question.get_responses %}
-                                        {% include 'response.html' with response=response %}
+                                        {% include 'fudaichatapp/response.html' with response=response %}
                                     {% endfor %}
                                 {% endif %}
                             </div>
