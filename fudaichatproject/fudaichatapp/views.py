@@ -18,15 +18,16 @@ from pure_pagination.mixins import PaginationMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.db.models import Count
+from django.urls import reverse_lazy
+from allauth.account.views import PasswordChangeView
 # Create your views here.
 User = get_user_model()
 
 class LandPage(TemplateView):
-    template_name = 'landing_page.html'
+    template_name = 'fudaichatapp/landing_page.html'
 
 class TopPage(TemplateView):
-    template_name = 'top_page.html'
-
+    template_name = 'fudaichatapp/top_page.html'
 
 class CreateUser(CreateView):
     template_name = 'signup.html'
@@ -109,7 +110,7 @@ class UserCreateComplete(TemplateView):
 
 
 class QuestionListView(PaginationMixin, ListView):
-    template_name = 'list.html'
+    template_name = 'fudaichatapp/list.html'
     model = Question
     context_object_name = 'questions'
     paginate_by = 3
@@ -164,7 +165,7 @@ def likeview(request):
         return JsonResponse(context)
 
 class LikedQuestionListView(PaginationMixin, ListView):
-    template_name = 'registration/liked_question_list.html'
+    template_name = 'fudaichatapp/mypage/liked_question_list.html'
     context_object_name = 'liked_questions'
     paginate_by = 1
 
@@ -196,7 +197,7 @@ class LikedQuestionListView(PaginationMixin, ListView):
         return context
 
 class MyQuestionListView(PaginationMixin, ListView):
-    template_name = 'registration/my_question_list.html'
+    template_name = 'fudaichatapp/mypage/my_question_list.html'
     context_object_name = 'my_questions'
     paginate_by = 3
 
@@ -228,11 +229,11 @@ class MyQuestionListView(PaginationMixin, ListView):
 
 
 class ProfileView(TemplateView):
-    template_name = 'registration/profile.html'
+    template_name = 'fudaichatapp/mypage/profile.html'
 
 
 class DeleteUserComfirmView(TemplateView):
-    template_name = 'registration/delete_confirm.html'
+    template_name = 'fudaichatapp/mypage/delete_confirm.html'
 
 
 class DeleteUserCompleteView(LoginRequiredMixin, View):
@@ -262,7 +263,7 @@ def newQuestionPage(request):
 
     context = {'form': form}
 
-    return render(request, 'comment_create.html', context)
+    return render(request, 'fudaichatapp/comment_create.html', context)
 
 # 質問への返信の処理
 def questionPage(request, id):
@@ -290,7 +291,7 @@ def questionPage(request, id):
         'response_form': response_form,
         'reply_form': reply_form,
     }
-    return render(request, 'question.html', context)
+    return render(request, 'fudaichatapp/question.html', context)
 
 # 返信に対する返信の処理
 def replyPage(request):
@@ -311,3 +312,14 @@ def replyPage(request):
             raise
 
     return redirect('list')
+
+
+class LoginAfterPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
+    @property
+    def success_url(self):
+        return reverse_lazy('password_change_done')
+
+login_after_password_change = LoginAfterPasswordChangeView.as_view()
+
+class PasswordChangeDoneView(TemplateView):
+    template_name = 'account/password_change_done.html'

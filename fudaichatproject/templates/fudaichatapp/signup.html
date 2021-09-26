@@ -14,10 +14,10 @@
                     <div style="width: 70%; margin: auto">
                         {{ form.non_field_errors }}
                         {% for field in form %}
-                        {{ field.label_tag }}<br>
-                        {{ field | add_class:'form-control'}}
-                        {{ field.errors }}
-                        <hr>
+                            {{ field.label_tag }}<br>
+                            {{ field | add_class:'form-control'}}
+                            {{ field.errors }}
+                            <hr>
                         {% endfor %}
                     </div>
                     <div class="col-12 text-center"><a href="{% url 'password_reset' %}">パスワードをお忘れですか?</a></div>
