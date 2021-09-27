@@ -11,7 +11,7 @@
         <div class="card border-grey border-lighten-3 m-0 box-shadow-0 card-account-right height-auto">                
             <div class="card-content m-0">                    
                 <div class="card-body p-3">
-                    <h1 class="text-cener">{% trans "Sign Up" %}</h1>
+                    <h1 class="text-center">{% trans "Sign Up" %}</h1>
                     <form class="signup form-horizontal form-signin" id="signup_form" method="post" action="{% url 'account_signup' %}">{% csrf_token %}
                         <div style="width: 70%; margin: auto">
                             {{ form.non_field_errors }}

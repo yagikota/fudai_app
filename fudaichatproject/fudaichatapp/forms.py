@@ -55,7 +55,7 @@ class NewQuestionForm(forms.ModelForm):
             }),
             'body': forms.Textarea(attrs={
                 'class': 'form-control',
-                'placeholder': '回答内容を入力してください。'
+                'placeholder': '質問内容を入力してください。'
             })
         }
 

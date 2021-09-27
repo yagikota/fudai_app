@@ -242,7 +242,7 @@ class DeleteUserCompleteView(LoginRequiredMixin, View):
         # 大元のデータベースから削除
         User.objects.filter(email=self.request.user.email).delete()
         auth_logout(self.request)
-        return render(self.request,'top_page.html')
+        return render(self.request,'fudaichatapp/landing_page.html')
 
 
 # 質問する時の処理
@@ -321,5 +321,6 @@ class LoginAfterPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
 
 login_after_password_change = LoginAfterPasswordChangeView.as_view()
 
+# pw変更後の遷移先
 class PasswordChangeDoneView(TemplateView):
     template_name = 'account/password_change_done.html'
