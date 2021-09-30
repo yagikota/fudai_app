@@ -159,7 +159,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # django-allauthの設定
 LOGIN_REDIRECT_URL = '/top_page/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'# the user is blocked from logging in until the email address is verified
 ACCOUNT_EMAIL_REQUIRED = True
 # ACCOUNT_EMAIL_SUBJECT_PREFIX = '[fudai-kenja.com] '
 ACCOUNT_MAX_EMAIL_ADDRESSES = 2
