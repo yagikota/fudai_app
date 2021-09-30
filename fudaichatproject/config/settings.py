@@ -156,19 +156,20 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # SECURE_SSL_REDIRECT = True
 
-# django.contrib.authの設定
-# LOGIN_URL = '/'
-# LOGIN_REDIRECT_URL = '/top_page/'
-# LOGOUT_REDIRECT_URL = '/'
-
 # django-allauthの設定
 LOGIN_REDIRECT_URL = '/top_page/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_SUBJECT_PREFIX = '[fudai-kenja.com] '
+ACCOUNT_MAX_EMAIL_ADDRESSES = 2
+ACCOUNT_USERNAME_MIN_LENGTH = 3
+
 
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 2,
     'MARGIN_PAGES_DISPLAYED': 1,
     'SHOW_FIRST_PAGE_WHEN_INVALID': True,
 }
+
+AUTH_USER_MODEL = 'fudaichatapp.User'
