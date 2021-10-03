@@ -159,11 +159,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # django-allauthの設定
 LOGIN_REDIRECT_URL = '/top_page/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_ON_GET = True 
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'# the user is blocked from logging in until the email address is verified
 ACCOUNT_EMAIL_REQUIRED = True
 # ACCOUNT_EMAIL_SUBJECT_PREFIX = '[fudai-kenja.com] '
 ACCOUNT_MAX_EMAIL_ADDRESSES = 2
 ACCOUNT_USERNAME_MIN_LENGTH = 3
+ACCOUNT_ADAPTER = 'fudaichatapp.adapter.ExtendedAccountAdapter'
 
 
 PAGINATION_SETTINGS = {

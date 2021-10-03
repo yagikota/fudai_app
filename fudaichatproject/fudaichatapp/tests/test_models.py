@@ -2,7 +2,6 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 '''
-
 ユーザー1がサイトのトップページに訪問
 会員登録ボタン押す
     (会員登録していない場合)
