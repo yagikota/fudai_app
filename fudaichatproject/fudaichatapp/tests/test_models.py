@@ -1,5 +1,41 @@
-# from django.contrib.auth import get_user_model
-# from django.test import TestCase
+from django.contrib.auth import get_user_model
+from django.test import TestCase
+
+User = get_user_model()
+
+
+class UserModelTests(TestCase):
+
+    def test_is_empty(self):
+        saved_user = User.objects.all()
+        self.assertEqual(saved_user.count(), 0)
+
+    def test_is_count_one(self):
+        user = User.objects.create_user(
+            username='test1',
+            email='test1@edu.osakafu-u.ac.jp',
+            password='psst1'
+        )
+        saved_user = User.objects.all()
+        self.assertEqual(saved_user.count(), 1)
+
+    def assertEqualUserModel(self, actual_user, username, email, password):
+        self.assertEqual(actual_user.username, username)
+        self.assertEqual(actual_user.email, email)
+        self.assertTrue(actual_user.check_password(password))
+
+    def test_saving_and_retrieving_user(self):
+        username, email, password = 'test1', 'test1@edu.osakafu-u.ac.jp', 'psst1'
+        User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
+        saved_users = User.objects.all()
+        actual_user = saved_users[0]
+        self.assertEqualUserModel(actual_user, username, email, password)
+
+
 
 '''
 ユーザー1がサイトのトップページに訪問 ok

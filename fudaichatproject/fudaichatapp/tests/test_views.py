@@ -59,9 +59,16 @@ class TopPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_redirect_when_logged_out(self):
-        self.client.logout()
+        logged_out = self.client.logout()
+        self.assertFalse(logged_out)
         response = self.client.get('/top_page/')
         self.assertRedirects(response, '/accounts/login/?next=/top_page/')
+
+# class QuestionListViewTests(TestCase):
+
+#     def Setup(self):
+#         self.
+
 
 
 """
