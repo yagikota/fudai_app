@@ -1,8 +1,8 @@
-from django.contrib.auth import get_user_model
-from django.test import TestCase
+# from django.contrib.auth import get_user_model
+# from django.test import TestCase
 
 '''
-ユーザー1がサイトのトップページに訪問
+ユーザー1がサイトのトップページに訪問 ok
 会員登録ボタン押す
     (会員登録していない場合)
     会員登録formに遷移
@@ -33,5 +33,4 @@ from django.test import TestCase
         トップページに遷移
     (正しく入力されなかった場合)
         トップページに遷移できない
-        
 '''
