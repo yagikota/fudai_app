@@ -1,21 +1,19 @@
 from django.urls import path
-from .views import LandPage, TopPage, QuestionListView,\
-ProfileView, DeleteUserComfirmView, DeleteUserCompleteView, questionPage, replyPage, newQuestionPage,\
-likeview, LikedQuestionListView, MyQuestionListView
+from . import views
 
 app_name  = 'fudaichat'
 
 urlpatterns = [
-    path('', LandPage.as_view(), name='land_page'),
-    path('top_page/', TopPage.as_view(), name='top_page'),
-    path('list/', QuestionListView.as_view(), name='list'),
-    path('liked_list/', LikedQuestionListView.as_view(),name='liked_list'),
-    path('my_q_list', MyQuestionListView.as_view(), name='my_q_list'),
-    path('like/', likeview, name='like'),
-    path('profile/', ProfileView.as_view(), name='profile'),
-    path('delete_confirm', DeleteUserComfirmView.as_view(), name='delete_confirm'),
-    path('delete_complete', DeleteUserCompleteView.as_view(), name='delete_complete'),
-    path('new_question', newQuestionPage, name='new_question'),
-    path('question/<int:id>/', questionPage, name='question'),
-    path('reply', replyPage, name='reply'), 
+    path('', views.land_page, name='land_page'),
+    path('top_page/', views.top_page, name='top_page'),
+    path('list/', views.question_list, name='list'),
+    path('liked_list/', views.liked_question_list,name='liked_list'),
+    path('my_q_list', views.my_question_list, name='my_q_list'),
+    path('like/', views.likeview, name='like'),
+    path('profile/', views.profile, name='profile'),
+    path('delete_confirm', views.delete_user_confirm, name='delete_confirm'),
+    path('delete_complete', views.delete_user_complete, name='delete_complete'),
+    path('new_question', views.new_question_page, name='new_question'),
+    path('question/<int:id>/', views.question_page, name='question'),
+    path('reply', views.replypage, name='reply'), 
 ]
