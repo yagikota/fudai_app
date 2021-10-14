@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from ..models import Question, Response, Likes
+from fudaichatapp.models import Question, Response, Likes
 
 User = get_user_model()
 

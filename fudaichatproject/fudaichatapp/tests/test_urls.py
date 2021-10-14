@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
-from .. import views 
+from fudaichatapp import views 
 
 class UrlsTests(TestCase):
 
