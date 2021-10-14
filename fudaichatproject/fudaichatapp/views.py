@@ -158,7 +158,7 @@ class MyQuestionListView(LoginRequiredMixin, PaginationMixin, ListView):
 my_question_list = MyQuestionListView.as_view()
 
 
-class ProfileView(TemplateView):
+class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'fudaichatapp/mypage/profile.html'
 
 
