@@ -65,7 +65,6 @@ question_list = QuestionListView.as_view()
 
 
 def likeview(request):
-    print(request)
     if request.method =="POST":
         question = get_object_or_404(Question, pk=request.POST.get('question_id'))
         author = request.user
@@ -176,7 +175,6 @@ class DeleteUserCompleteView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         # 大元のデータベースから削除
         User.objects.filter(email=self.request.user.email).delete()
-        auth_logout(self.request)
         return render(self.request,'fudaichatapp/landing_page.html')
 
 

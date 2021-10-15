@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase, RequestFactory
 from allauth.account.models import EmailAddress
 from fudaichatapp.models import Question, Likes
-from fudaichatapp.views import question_list
+from fudaichatapp.views import question_list, liked_question_list, my_question_list, delete_user_complete
 
 User = get_user_model()
 
@@ -101,8 +101,6 @@ class QuestionListViewTests(LoginRequiredMixinTests):
         self.url_name = '/list/'
         self.factory = RequestFactory()
 
-
-
     def test_are_correct_context_data(self):
         request = self.factory.get('/list/')
         request.user = self.user3
@@ -110,6 +108,73 @@ class QuestionListViewTests(LoginRequiredMixinTests):
         liked_list = response.context_data['liked_list']
         self.assertIn(self.question.id, liked_list)
 
+class LikedQuestionListViewTests(LoginRequiredMixinTests):
+    def setUp(self):
+        super().setUp()
+        self.user2 = User.objects.create_user(
+            username='test2',
+            email='test2@edu.osakafu-u.ac.jp',
+            password='psst2'
+        )
+        self.user3 = User.objects.create_user(
+            username='test3',
+            email='test3@edu.osakafu-u.ac.jp',
+            password='psst3'
+        )
+        self.question = create_question(author=self.user2, title='titlewewe', body="body")
+        create_likes(self.question, self.user3)
+        self.url_name = '/like/'
+        self.factory = RequestFactory()
+
+    def test_are_correct_context_data(self):
+        request = self.factory.get('/like/')
+        request.user = self.user3
+        response = liked_question_list(request)
+        liked_list = response.context_data['liked_list']
+        self.assertIn(self.question.id, liked_list)
+
+class MyQuestionListViewTests(LoginRequiredMixinTests):
+    def setUp(self):
+        super().setUp()
+        self.user2 = User.objects.create_user(
+            username='test2',
+            email='test2@edu.osakafu-u.ac.jp',
+            password='psst2'
+        )
+        self.user3 = User.objects.create_user(
+            username='test3',
+            email='test3@edu.osakafu-u.ac.jp',
+            password='psst3'
+        )
+        self.question = create_question(author=self.user3, title='titlewewe', body="body")
+        create_likes(self.question, self.user3)
+        self.url_name = '/my_q_list/'
+        self.factory = RequestFactory()
+
+    def test_are_correct_context_data(self):
+        request = self.factory.get('/my_q_list/')
+        request.user = self.user3
+        response = my_question_list(request)
+        liked_list = response.context_data['liked_list']
+        self.assertIn(self.question.id, liked_list)
+
+class DeleteUserCompleteViewTests(LoginRequiredMixinTests):
+
+    def setUp(self):
+        super().setUp()
+        self.user2 = User.objects.create_user(
+            username='test2',
+            email='test2@edu.osakafu-u.ac.jp',
+            password='psst2'
+        )
+        self.factory = RequestFactory()
+
+
+    def test_successfully_deleted_user(self):
+        request = self.factory.get('/delete_complete/')
+        request.user = self.user2
+        response = delete_user_complete(request)
+        self.assertIsNone(User.objects.filter(email=request.user.email).first())
 
 
 
