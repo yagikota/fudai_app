@@ -16,21 +16,21 @@ from allauth.account.views import PasswordChangeView
 User = get_user_model()
 
 class LandPage(TemplateView):
-    template_name = 'fudaichatapp/landing_page.html'
+    template_name = 'main/landing_page.html'
 
 
 land_page = LandPage.as_view()
 
 
 class TopPage(LoginRequiredMixin, TemplateView):
-    template_name = 'fudaichatapp/top_page.html'
+    template_name = 'main/top_page.html'
 
 
 top_page = TopPage.as_view()
 
 
 class QuestionListView(LoginRequiredMixin, PaginationMixin, ListView):
-    template_name = 'fudaichatapp/list.html'
+    template_name = 'main/list.html'
     model = Question
     context_object_name = 'questions'
     paginate_by = 3
@@ -87,7 +87,7 @@ def likeview(request):
         return JsonResponse(context)
 
 class LikedQuestionListView(LoginRequiredMixin, PaginationMixin, ListView):
-    template_name = 'fudaichatapp/mypage/liked_question_list.html'
+    template_name = 'main/mypage/liked_question_list.html'
     context_object_name = 'liked_questions'
     paginate_by = 1
 
@@ -123,7 +123,7 @@ liked_question_list = LikedQuestionListView.as_view()
 
 
 class MyQuestionListView(LoginRequiredMixin, PaginationMixin, ListView):
-    template_name = 'fudaichatapp/mypage/my_question_list.html'
+    template_name = 'main/mypage/my_question_list.html'
     context_object_name = 'my_questions'
     paginate_by = 3
 
@@ -158,13 +158,13 @@ my_question_list = MyQuestionListView.as_view()
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
-    template_name = 'fudaichatapp/mypage/profile.html'
+    template_name = 'main/mypage/profile.html'
 
 
 profile = ProfileView.as_view()
 
 class DeleteUserComfirmView(LoginRequiredMixin, TemplateView):
-    template_name = 'fudaichatapp/mypage/delete_confirm.html'
+    template_name = 'main/mypage/delete_confirm.html'
 
 
 delete_user_confirm = DeleteUserComfirmView.as_view()
@@ -175,7 +175,7 @@ class DeleteUserCompleteView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         # 大元のデータベースから削除
         User.objects.filter(email=self.request.user.email).delete()
-        return render(self.request,'fudaichatapp/landing_page.html')
+        return render(self.request,'main/landing_page.html')
 
 
 delete_user_complete = DeleteUserCompleteView.as_view()
@@ -199,7 +199,7 @@ def new_question_page(request):
 
     context = {'form': form}
 
-    return render(request, 'fudaichatapp/comment_create.html', context)
+    return render(request, 'main/comment_create.html', context)
 
 # 質問への返信の処理
 def question_page(request, id):
@@ -227,7 +227,7 @@ def question_page(request, id):
         'response_form': response_form,
         'reply_form': reply_form,
     }
-    return render(request, 'fudaichatapp/question.html', context)
+    return render(request, 'main/question.html', context)
 
 # 返信に対する返信の処理
 def replypage(request):

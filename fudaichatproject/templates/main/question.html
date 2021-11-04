@@ -1,4 +1,4 @@
-{% extends 'fudaichatapp/base.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
 
 {% block body %}
@@ -10,7 +10,7 @@
             <div class="row breadcrumbs-top d-inline-block">
                 <div class="breadcrumb-wrapper col-12">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'fudaichat:top_page' %}">Toppage</a>
+                    <li class="breadcrumb-item"><a href="{% url 'main:top_page' %}">Toppage</a>
                     </li>
                     <li class="breadcrumb-item active">質問する
                     </li>
@@ -19,7 +19,7 @@
             </div>
             </div>
             <div class="content-header-right col-md-4 col-12 d-none d-md-inline-block">
-            <div class="btn-group float-md-right"><a class="btn-gradient-primary white" href="{% url 'fudaichat:new_question' %}">質問する</a></div>
+            <div class="btn-group float-md-right"><a class="btn-gradient-primary white" href="{% url 'main:new_question' %}">質問する</a></div>
             </div>
         </div>
 
@@ -64,7 +64,7 @@
                                     <p class="">No responses yet</p>
                                 {% else %}
                                     {% for response in question.get_responses %}
-                                        {% include 'fudaichatapp/response.html' with response=response %}
+                                        {% include 'main/response.html' with response=response %}
                                     {% endfor %}
                                 {% endif %}
                             </div>

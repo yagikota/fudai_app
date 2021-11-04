@@ -1,4 +1,4 @@
-<form action="{% url 'fudaichat:like'%}" method="POST">
+<form action="{% url 'main:like'%}" method="POST">
     {% csrf_token %}
     <button id="like" name="{{question.id}}">
             <i class="fas fa-thumbs-up fa-lg"></i>

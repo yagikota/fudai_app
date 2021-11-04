@@ -24,7 +24,7 @@
         <!-- 返信一覧を表示 -->
         <div class="collapse" id="collapse-{{response.id}}-show-reply">
             {% for children in response.get_responses %}
-                {% include 'fudaichatapp/response.html' with response=children %}
+                {% include 'main/response.html' with response=children %}
             {% endfor %}
         </div>
 

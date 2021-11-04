@@ -1,7 +1,7 @@
 from django.urls import path
-from fudaichatapp import views
+from main import views
 
-app_name  = 'fudaichat'
+app_name  = 'main'
 
 urlpatterns = [
     path('', views.land_page, name='land_page'),
