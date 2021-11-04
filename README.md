@@ -1,4 +1,4 @@
-# fudai_app
+# fudai_app([univ_app](https://github.com/yagikota/univ_app/)へ移行)
 
 ## アプリケーション概要
 
@@ -27,3 +27,4 @@
 * ### フレームワーク等
 
   * Django | Bootstrap
+
