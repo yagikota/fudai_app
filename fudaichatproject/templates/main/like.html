@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center">
-    <form action="{% url 'fudaichat:like' %}" method="POST">
+    <form action="{% url 'main:like' %}" method="POST">
         {% csrf_token %}
         {% if question.id in liked_list %}
         <button id="like" name="{{question.id}}" style="outline: none; border-style: none" class="bg-white"><i class="fas fa-thumbs-up fa-lg"></i></button>

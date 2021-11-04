@@ -1,6 +1,6 @@
 [
   {
-    "model": "fudaichatapp.commentmodel",
+    "model": "main.commentmodel",
     "fields": {
       "title": "最初のコメント",
       "content": "コメントの本文",
@@ -9,7 +9,7 @@
     }
   },
   {
-    "model": "fudaichatapp.commentmodel",
+    "model": "main.commentmodel",
     "fields": {
       "title": "2個目のコメント",
       "content": "2個目の本文",
@@ -18,7 +18,7 @@
     }
   },
   {
-    "model": "fudaichatapp.commentmodel",
+    "model": "main.commentmodel",
     "fields": {
       "title": "<3個目>のコメント",
       "content": "<h1>3個目の本文</h1>",
@@ -27,7 +27,7 @@
     }
   },
   {
-    "model": "fudaichatapp.commentmodel",
+    "model": "main.commentmodel",
     "fields": {
       "title": "4個目のコメント",
       "content": "4個目の本文",
@@ -36,7 +36,7 @@
     }
   },
   {
-    "model": "fudaichatapp.commentmodel",
+    "model": "main.commentmodel",
     "fields": {
       "title": "5個目のコメント",
       "content": "5個目の本文",

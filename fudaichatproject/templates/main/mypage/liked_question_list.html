@@ -1,11 +1,10 @@
-{% extends "fudaichatapp/mypage/base.html" %}
+{% extends "main/mypage/base.html" %}
 
 {% block content %}
-
 <div class="content-detached ">
     <div class="content-body">
         <div id="wallet">
-            {% include 'fudaichatapp/simple_pagination.html' %}
+            {% include 'main/simple_pagination.html' %}
             <div class="wallet-table-th d-none d-md-block">
                 <div class="row">
                     <div class="col-md-6 col-12 py-1">
@@ -23,7 +22,7 @@
                 </div>
             </div>
 
-        {% for question in my_questions %}
+        {% for question in liked_questions %}
         <section class="card ">
             <div class="card-content">
                 <div class="card-body">
@@ -42,8 +41,8 @@
                                 <p class="text-muted mb-0 font-small-3">{{ question.created_at | date:"Y/m/d H:i" }}</p>
                             </div>
                             <div class="col-md-2 col-12 py-1 text-center">
-                                {% include 'fudaichatapp/like.html' %}
-                                <a class=" btn btn-secondary mt-1 btn-block" href="{% url 'fudaichat:question' question.id %}">回答</a>
+                                {% include 'main/like.html' %}
+                                <a class=" btn btn-secondary mt-1 btn-block" href="{% url 'main:question' question.id %}">回答</a>
                             </div>
                         </div>
                     </div>
@@ -52,7 +51,7 @@
         </section>
         {% endfor %}
 
-        {% include 'fudaichatapp/simple_pagination.html' %}
+        {% include 'main/simple_pagination.html' %}
 
         </div>
     </div>
@@ -64,7 +63,7 @@
             event.preventDefault();
             $.ajax({
                 type: 'POST',
-                url: "{% url 'fudaichat:like' %}",
+                url: "{% url 'main:like' %}",
                 data: {
                     'question_id': $(this).attr('name'),
                     'csrfmiddlewaretoken': '{{ csrf_token }}'},
@@ -84,4 +83,5 @@
         });
     });
 </script>
+
 {% endblock %}

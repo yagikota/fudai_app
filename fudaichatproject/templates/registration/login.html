@@ -22,7 +22,7 @@
                     {% csrf_token %}
                     <div class=" col-12  text-center "><a href="{% url 'password_reset' %}">パスワードをお忘れですか?</a></div>
                     <button type="submit" class="btn-gradient-primary btn-block my-1">ログイン</button>
-                    <p class="text-center"><a href="{% url 'fudaichat:signup' %}" class="card-link">無料登録</a></p>
+                    <p class="text-center"><a href="{% url 'main:signup' %}" class="card-link">無料登録</a></p>
                 </form>
             </div>
         </div>

@@ -30,23 +30,23 @@
         <!-- END fixed-top-->
         <!-- BEGIN menu-->
         <div class="main-menu menu-fixed menu-dark menu-bg-default rounded menu-accordion menu-shadow">
-            <div class="main-menu-content"><a class="navigation-brand d-none d-md-block d-lg-block d-xl-block" href="{% url 'fudaichat:top_page' %}"><img class="brand-logo" alt="CryptoDash admin logo" src="{% static 'css_framework/app-assets/images/logo/logo.png' %}"/></a>
+            <div class="main-menu-content"><a class="navigation-brand d-none d-md-block d-lg-block d-xl-block" href="{% url 'main:top_page' %}"><img class="brand-logo" alt="CryptoDash admin logo" src="{% static 'css_framework/app-assets/images/logo/logo.png' %}"/></a>
                 <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
                     <li class=" nav-item">
-                        <a href="{% url 'fudaichat:top_page' %}">
+                        <a href="{% url 'main:top_page' %}">
                             <i class="fas fa-home"></i>
                             <span class="menu-title" data-i18n="">トップページ</span>
                         </a>
                     </li>
                     <li class=" nav-item">
-                        <a href="{% url 'fudaichat:list' %}">
+                        <a href="{% url 'main:list' %}">
                             <i class="fas fa-list"></i>
                             <span class="menu-title" data-i18n="">質問一覧</span>
                         </a>
                     </li>
-                    <li class=" nav-item"><a href="{% url 'fudaichat:profile' %}"><i class="fas fa-user"></i><span class="menu-title" data-i18n="">アカウント</span></a>
+                    <li class=" nav-item"><a href="{% url 'main:profile' %}"><i class="fas fa-user"></i><span class="menu-title" data-i18n="">アカウント</span></a>
                         <ul class="menu-content">
-                            <li><a class="menu-item" href="{% url 'fudaichat:profile' %}">マイページ</a></li>
+                            <li><a class="menu-item" href="{% url 'main:profile' %}">マイページ</a></li>
                             <li><a class="menu-item" href="{% url 'account_logout' %}">ログアウト</a></li>
                         </ul>
                     </li>

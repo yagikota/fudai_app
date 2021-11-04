@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase, RequestFactory
 from allauth.account.models import EmailAddress
-from fudaichatapp.models import Question, Likes
-from fudaichatapp.views import question_list, liked_question_list, my_question_list, delete_user_complete
+from main.models import Question, Likes
+from main.views import question_list, liked_question_list, my_question_list, delete_user_complete
 
 User = get_user_model()
 

@@ -1,11 +1,11 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
-from fudaichatapp import views 
+from main import views 
 
 class UrlsTests(TestCase):
 
     def setUp(self):
-        self.app_name = 'fudaichat'
+        self.app_name = 'main'
 
     def reverse_url(self, name):
         url_pattern_name = self.app_name + ':' + name
@@ -48,7 +48,7 @@ class UrlsTests(TestCase):
         self.assertEqual(resolve(url).func, views.new_question_page)
 
     def test_question_url_is_resolved(self):
-        url = reverse('fudaichat:question', args=[1])
+        url = reverse('main:question', args=[1])
         self.assertEqual(resolve(url).func, views.question_page)
 
     def test_reply_url_is_resolved(self):

@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'fudaichatapp.apps.fudaichatappConfig',
+    'main.apps.mainConfig',
     'bootstrap4',
     'widget_tweaks',
     'pure_pagination',
@@ -165,7 +165,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 # ACCOUNT_EMAIL_SUBJECT_PREFIX = '[fudai-kenja.com] '
 ACCOUNT_MAX_EMAIL_ADDRESSES = 2
 ACCOUNT_USERNAME_MIN_LENGTH = 3
-ACCOUNT_ADAPTER = 'fudaichatapp.adapter.ExtendedAccountAdapter'
+ACCOUNT_ADAPTER = 'main.adapter.ExtendedAccountAdapter'
 
 
 PAGINATION_SETTINGS = {
@@ -174,4 +174,4 @@ PAGINATION_SETTINGS = {
     'SHOW_FIRST_PAGE_WHEN_INVALID': True,
 }
 
-AUTH_USER_MODEL = 'fudaichatapp.User'
+AUTH_USER_MODEL = 'main.User'
